@@ -34,3 +34,7 @@ Generate a TODO CRUD application with the following endpoints and extra challeng
 
 Install the project
     npm install
+Run the project
+    node server.js
+Run the tests
+    npm run test
