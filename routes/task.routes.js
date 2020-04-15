@@ -22,7 +22,7 @@ const routes = [
                             id: {type: 'number'},
                             name: {type: 'string'},
                             is_completed: {type: 'boolean'},
-                            created_at: {type: 'string'}
+                            //falta tipo fecha
                         }
                     }
                 }
@@ -41,7 +41,7 @@ const routes = [
                         id: {type: 'number'},
                         name: {type: 'string'},
                         is_completed: {type: 'boolean'},
-                        created_at: {type: 'string'}
+                        //falta tipo fecha
                     }
                 }
             }
@@ -57,8 +57,7 @@ const routes = [
                 properties: {
                     id: {type: 'number'},
                     name: {type: 'string'},
-                    is_completed: {type: 'boolean'},
-                    created_at: {type: 'string'}
+                    is_completed: {type: 'boolean'}
                 }
             },
             response: {

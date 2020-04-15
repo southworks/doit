@@ -1,23 +1,45 @@
 const storeData = require('../store/local_store');
-
+const boom = require('boom')
+const Task = require('../model/task')
 const getAllTasks = (req, res) =>{
-    res.send(storeData);
+    try {
+        const tasks =  Task.find()
+        return tasks
+      } catch (err) {
+        throw boom.boomify(err)
+      }
 }
 
 const getTaskById = (req, res) => {
-    const task = storeData.find(storedTask => storedTask.id === req.params.id);
-
-    res.send(task);
+    try {
+        const id = req.params.id
+        const task =  Task.findById(id)
+        return task
+      } catch (err) {
+        throw boom.boomify(err)
+      }
 }
 
 const createTask = (req, res) =>{
-    console.log("createTask: " + req.body);
-    res.send("Task created");
+    try {
+        const task = new Task(req.body);
+        console.log(task)
+        return task.save()
+      } catch (err) {
+        throw boom.boomify(err)
+      }
 }
 
 const deleteTask = (req, res) =>{
-    console.log("deleteTask: " + req.params.id);
-    res.send("Task deleted");
+    try {
+        const id = req.params.id
+        const task = Task.findByIdAndRemove(id)
+        return task
+      } catch (err) {
+        throw boom.boomify(err)
+      }
 }
+
+
 
 module.exports = {getAllTasks, getTaskById, createTask, deleteTask};
