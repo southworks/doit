@@ -9,85 +9,27 @@ const taskController = require('../controllers/task.controller');
 */
 
 const routes = [
-    {
-        method: 'GET',
-        url: '/tasks',
-        schema: {
-            response: {
-                200: {
-                    type: 'array',
-                    items: {
-                        type: 'object',
-                        properties: {
-                            id: {type: 'number'},
-                            name: {type: 'string'},
-                            is_completed: {type: 'boolean'},
-                            //falta tipo fecha
-                        }
-                    }
-                }
+  {
+    method: 'GET',
+    url: '/tasks',
+    schema: {
+      response: {
+        200: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'number' },
+              name: { type: 'string' },
+              is_completed: { type: 'boolean' }
+              //falta tipo fecha
             }
-        },
-        handler: taskController.getAllTasks
+          }
+        }
+      }
     },
-    {
-        method: 'GET',
-        url: '/tasks/:id',
-        schema: {
-            response: {
-                200: {
-                    type: 'object',
-                    properties: {
-                        id: {type: 'number'},
-                        name: {type: 'string'},
-                        is_completed: {type: 'boolean'},
-                        //falta tipo fecha
-                    }
-                }
-            }
-        },
-        handler: taskController.getTaskById
-    },
-    {
-        method: 'POST',
-        url: '/tasks',
-        schema: {
-            body:{
-                type: 'object',
-                properties: {
-                    id: {type: 'number'},
-                    name: {type: 'string'},
-                    is_completed: {type: 'boolean'}
-                }
-            },
-            response: {
-                201: {
-                    type: 'object',
-                    properties: {
-                        response: {type: 'string'},
-                    }
-                }
-            }
-        },
-        handler: taskController.createTask
-    },
-    {
-        method: 'DELETE',
-        url: '/tasks/:id',
-        schema: {
-            response: {
-                200: {
-                    type: 'object',
-                    properties: {
-                        response: {type: 'string'},
-                    }
-                }
-            }
-        },
-        handler: taskController.deleteTask
-    }
-]
-
-
+    handler: taskController.getAllTasks
+  }
+];
 
 module.exports = routes;
