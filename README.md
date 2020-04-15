@@ -43,3 +43,14 @@ Run the project
 Run the tests
 
     npm run test
+
+**Coverage**
+
+Calculate
+
+    npm test -- --coverage
+
+View
+> [PATH TO PROJECT]/coverage/lcov-report/index.html
+> [PATH TO PRoJECT]/coverage/clover.xml
+> [PATH TO PROJECT]/coverage/coverage-final.json
