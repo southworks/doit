@@ -30,7 +30,7 @@ Generate a TODO CRUD application with the following endpoints and extra challeng
 -   API documentation in Markdown
 -   Add updated_on fields on the TODO
 
-**How to**
+### **How to**
 
 Install the project
 
@@ -44,7 +44,7 @@ Run the tests
 
     npm run test
 
-**Coverage**
+### **Coverage**
 
 Calculate
 
@@ -52,5 +52,7 @@ Calculate
 
 View
 > [PATH TO PROJECT]/coverage/lcov-report/index.html
+
 > [PATH TO PRoJECT]/coverage/clover.xml
+
 > [PATH TO PROJECT]/coverage/coverage-final.json
