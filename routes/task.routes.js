@@ -12,6 +12,22 @@ const routes = [
     {
         method: 'GET',
         url: '/tasks',
+        schema: {
+            response: {
+                200: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            id: {type: 'number'},
+                            name: {type: 'string'},
+                            is_completed: {type: 'boolean'},
+                            created_at: {type: 'string'}
+                        }
+                    }
+                }
+            }
+        },
         handler: taskController.getAllTasks
     },
     {
@@ -35,11 +51,40 @@ const routes = [
     {
         method: 'POST',
         url: '/tasks',
+        schema: {
+            body:{
+                type: 'object',
+                properties: {
+                    id: {type: 'number'},
+                    name: {type: 'string'},
+                    is_completed: {type: 'boolean'},
+                    created_at: {type: 'string'}
+                }
+            },
+            response: {
+                201: {
+                    type: 'object',
+                    properties: {
+                        response: {type: 'string'},
+                    }
+                }
+            }
+        },
         handler: taskController.createTask
     },
     {
         method: 'DELETE',
         url: '/tasks/:id',
+        schema: {
+            response: {
+                200: {
+                    type: 'object',
+                    properties: {
+                        response: {type: 'string'},
+                    }
+                }
+            }
+        },
         handler: taskController.deleteTask
     }
 ]
@@ -47,34 +92,3 @@ const routes = [
 
 
 module.exports = routes;
-
-/*
-
-fastify.route({
-    method: 'GET',
-    url: '/todo/:id',
-    schema: {
-      querystring: {
-
-      },
-      response: {
-        200: {
-          type: 'object',
-            properties: {
-                id: {type: 'number'},
-                name: {type: 'string'},
-                is_completed: {type: 'boolean'},
-                created_at: {type: 'string'}
-            }
-        }
-      }
-    },
-    handler: (req, res) => {
-        console.log(req)
-        res.send(
-            storeData.filter(task => task.id === req.params.id)
-        )
-    }
-})
-
-*/
