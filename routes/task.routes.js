@@ -10,7 +10,7 @@ const taskController = require("../controllers/task.controller");
 
 const routes = [
   {
-    method: "GET",S
+    method: "GET",
     url: "/tasks",
     schema: {
       response: {
@@ -29,6 +29,31 @@ const routes = [
       },
     },
     handler: taskController.getAllTasks,
+  },
+  {
+    method: 'POST',
+    url: '/tasks',
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          is_completed: { type: 'boolean' }
+        },
+        required: ['name']
+      },
+      response: {
+        201: {
+          type: 'object',
+          properties: {
+            id: { type: 'number' },
+            name: { type: 'string' },
+            is_completed: { type: 'boolean' }
+          }
+        }
+      }
+    },
+    handler: taskController.save
   },
 ];
 
