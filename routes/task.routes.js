@@ -29,7 +29,7 @@ const routes = [
       }
     },
     handler: taskController.getAllTasks
-  }
+  },
 ];
 
 module.exports = routes;
