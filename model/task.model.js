@@ -21,4 +21,4 @@ const getAllTasks = async (page, limit) => {
 
 
 
-module.exports = { getAllTasks, getTaskById };
+module.exports = { getAllTasks };
