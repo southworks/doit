@@ -22,7 +22,7 @@ const routes = [
               id: { type: "number" },
               name: { type: "string" },
               is_completed: { type: "boolean" },
-              //falta tipo fecha
+              date: { type: "date" },
             },
           },
         },
