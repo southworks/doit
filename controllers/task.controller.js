@@ -1,10 +1,12 @@
-const boom = require('boom');
-const model = require('../model/task.model');
+const boom = require("boom");
+const model = require("../model/task.model");
 
 const getAllTasks = async (req, res) => {
-  res = await model.getAllTasks(req);
-  return(res);
+  var page = Number(req.query.page);
+  var limit = Number(req.query.limit);
+
+  res = await model.getAllTasks(page, limit);
+  return res;
 };
 
-
-module.exports = { getAllTasks, getTaskById };
+module.exports = { getAllTasks };
