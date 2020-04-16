@@ -29,4 +29,19 @@ const save = (req, res) => {
   }
 }
 
-module.exports = { getAllTasks, save };
+const deleteTaskById = async (req, res) => {
+  const id = req.query.id
+  let result = await model.deleteTaskById(id);
+  if (result === false) {
+   return res
+    .code(400)
+    .header('Content-Type', 'application/json; charset=utf-8')
+    .send({ error: 'invalid id' });
+  }
+  return res
+  .code(200)
+  .header('Content-Type', 'application/json; charset=utf-8')
+  .send({ deleted_id: id });
+};
+
+module.exports = { getAllTasks, deleteTaskById, save };

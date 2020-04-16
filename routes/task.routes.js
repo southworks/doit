@@ -31,29 +31,34 @@ const routes = [
     handler: taskController.getAllTasks,
   },
   {
-    method: 'POST',
-    url: '/tasks',
+    method: "POST",
+    url: "/tasks",
     schema: {
       body: {
-        type: 'object',
+        type: "object",
         properties: {
-          name: { type: 'string' },
-          is_completed: { type: 'boolean' }
+          name: { type: "string" },
+          is_completed: { type: "boolean" },
         },
-        required: ['name']
+        required: ["name"],
       },
       response: {
         201: {
-          type: 'object',
+          type: "object",
           properties: {
-            id: { type: 'number' },
-            name: { type: 'string' },
-            is_completed: { type: 'boolean' }
-          }
-        }
-      }
+            id: { type: "number" },
+            name: { type: "string" },
+            is_completed: { type: "boolean" },
+          },
+        },
+      },
     },
-    handler: taskController.save
+    handler: taskController.save,
+  },
+  {
+    method: "DELETE",
+    url: "/tasks/:id",
+    handler: taskController.deleteTaskById,
   },
 ];
 
