@@ -2,10 +2,7 @@
 const taskSchema = require('../schema/task.schema');
 const boom = require('boom');
 
-const getAllTasks = async (req) => {
-  var page = Number(req.query.page);
-  var limit = Number(req.query.limit);
-
+const getAllTasks = async (page, limit) => {
   if(page===undefined)
     page = 0; //Constantes globales?
 
@@ -21,5 +18,7 @@ const getAllTasks = async (req) => {
     throw boom.boomify(err);
   }
 };
+
+
 
 module.exports = { getAllTasks, getTaskById };

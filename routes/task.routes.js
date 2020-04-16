@@ -1,4 +1,4 @@
-const taskController = require('../controllers/task.controller');
+const taskController = require("../controllers/task.controller");
 
 /*
     List all the TODOs and with pagination => GET "/all"
@@ -10,25 +10,25 @@ const taskController = require('../controllers/task.controller');
 
 const routes = [
   {
-    method: 'GET',
-    url: '/tasks',
+    method: "GET",S
+    url: "/tasks",
     schema: {
       response: {
         200: {
-          type: 'array',
+          type: "array",
           items: {
-            type: 'object',
+            type: "object",
             properties: {
-              id: { type: 'number' },
-              name: { type: 'string' },
-              is_completed: { type: 'boolean' }
+              id: { type: "number" },
+              name: { type: "string" },
+              is_completed: { type: "boolean" },
               //falta tipo fecha
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     },
-    handler: taskController.getAllTasks
+    handler: taskController.getAllTasks,
   },
 ];
 
