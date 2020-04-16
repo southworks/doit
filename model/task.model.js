@@ -40,4 +40,3 @@ const deleteTaskById = async (id) => {
 
 
 module.exports = { getAllTasks,deleteTaskById };
-

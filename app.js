@@ -1,5 +1,5 @@
 const fastify = require('fastify')({ logger: true });
-const port = process.argv[2];
+const port = process.argv[2] || 8000;
 const routes = require('./routes/task.routes');
 const mongoose = require('mongoose')
 
