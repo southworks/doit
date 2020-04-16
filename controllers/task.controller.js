@@ -2,9 +2,9 @@ const boom = require('boom');
 const model = require('../model/task.model');
 
 const getAllTasks = async (req, res) => {
-  let result = await model.getAllTasks();
-  console.log(result);
-  return result; //res.response(result).type('application/json'); <-- pendiente
+  res = await model.getAllTasks(req);
+  return(res);
 };
 
-module.exports = { getAllTasks };
+
+module.exports = { getAllTasks, getTaskById };
