@@ -1,6 +1,6 @@
 const boom = require("boom");
 const model = require("../model/task.model");
-const task = require("../schema/task.schema");
+const Task = require("../schema/task.schema");
 
 const getAllTasks = async (req, res) => {
   var page = Number(req.query.page);
@@ -12,7 +12,7 @@ const getAllTasks = async (req, res) => {
 
 const save = (req, res) => {
   try {
-    const task = new task({
+    const task = new Task({
       name: req.body.name,
       is_completed: req.body.is_completed
     });
