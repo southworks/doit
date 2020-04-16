@@ -38,12 +38,6 @@ const deleteTaskById = async (id) => {
   }
 };
 
-const getTaskById = async (taskId) => {
-  try {
-    return taskSchema.findById(taskId);
-  } catch (error) {
-    throw boom.boomify(error);
-  }
-};
 
-module.exports = { getAllTasks, deleteTaskById, getTaskById };
+module.exports = { getAllTasks,deleteTaskById };
+

@@ -6,8 +6,10 @@ const getAllTasks = async (req, res) => {
   var page = Number(req.query.page);
   var limit = Number(req.query.limit);
 
-  res = await model.getAllTasks(page, limit);
-  return res;
+  return res
+  .code(200)
+  .header('Content-Type', 'application/json; charset=utf-8')
+  .send(await model.getAllTasks(page, limit));
 };
 
 const save = (req, res) => {
