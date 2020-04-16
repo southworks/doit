@@ -45,6 +45,7 @@ If all it's ok, we should push our changes to the remote repo
 `git push origin getById`
 
 Sometimes, we may found conflicts that must to resolve with rebasing tool. You will notice that  your branch has suffix **| REBASE x/x** in parentheses.
+![Git Bash console with rebasing tool](https://sofes.miximages.com/git/fI4Qr.jpg)
 
 To resolve this conflicts, open vs code and navigate into **source control** pan. Then, select the files what you want to resolve and check the code lines of our **local changes** and **dev code.**
 Finally, **stage** the conflicted files and go to **git bash**
@@ -55,6 +56,20 @@ And push the changes
 So, with the local changes pushed to our remote repo go to GitHub project repo and click in **New pull request**
 
 Compare changes between **base: dev** and **compare: getById** branch. Then click in **Create pull request** and confirm.
+![Pull Request](https://help.github.com/assets/images/help/pull_requests/pullrequest-send.png)
+
+### Start a new branch or change to another
+To change or create a new brach we need to not have pending changes in our local repo. Use `git status` to see it.
+
+If we want to **change** to an existing branch simply do `git checkot {branch to change}` without the keys.
+
+Else if we want to **create** a new branch first we need to go to dev branch and get the latest version:
+`git checkout dev` then `git fetch origin dev` and `git pull origin dev`
+
+Finally, create the new branch:
+`git checkout -b newBranch`
+
+
 
 ## [Glossary]
 [GitGlossary](https://git-scm.com/docs/gitglossary)
