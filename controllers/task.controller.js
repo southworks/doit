@@ -32,7 +32,7 @@ const save = (req, res) => {
 };
 
 const deleteTaskById = async (req, res) => {
-  const id = req.query.id;
+  const id = req.params.id
   let result = await model.deleteTaskById(id);
   if (result === false) {
     return res

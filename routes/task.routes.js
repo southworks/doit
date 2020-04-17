@@ -57,6 +57,9 @@ const routes = [
   {
     method: "DELETE",
     url: "/tasks/:id",
+    params: {
+        id: { type: 'string' }
+    },
     handler: taskController.deleteTaskById,
   },
   {
