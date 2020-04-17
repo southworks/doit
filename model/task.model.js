@@ -10,9 +10,6 @@ const getAllTasks = async (page, limit) => {
     var totalItems = (await taskSchema.find()).length;
     var items = await taskSchema.find().limit(limit).skip(limit * page);
 
-    console.log(totalItems)
-    console.log(items.length)
-
     return JSON.stringify({ items: items, count: totalItems });
   } catch (error) {
     throw boom.boomify(err);
