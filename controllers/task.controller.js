@@ -46,16 +46,4 @@ const deleteTaskById = async (req, res) => {
   .send({ deleted_id: id });
 };
 
-<<<<<<< HEAD
 module.exports = { getAllTasks, deleteTaskById, save };
-=======
-const getTaskById = async (req, res) => {
-  const result = await model.getTaskById(req.params.id);
-  return res
-    .code(200)
-    .header('Content-Type', 'application/json; charset=utf-8')
-    .send(result);
-}
-
-module.exports = { getAllTasks, deleteTaskById, getTaskById };
->>>>>>> minor fixes
