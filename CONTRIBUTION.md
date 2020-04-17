@@ -71,7 +71,7 @@ Finally, create the new branch:
 
 
 
-## [Glossary]
+### [Glossary]
 [GitGlossary](https://git-scm.com/docs/gitglossary)
 
 #### master
@@ -99,3 +99,34 @@ Fetching a  [branch](https://git-scm.com/docs/gitglossary#def_branch)  means to 
 #### rebase
 
 To reapply a series of changes from a  [branch](https://git-scm.com/docs/gitglossary#def_branch)  to a different base, and reset the  [head](https://git-scm.com/docs/gitglossary#def_head)  of that branch to the result.
+
+
+
+## DoIT - Structure and code 
+
+
+### Layers
+
+
+#### controllers
+This layer contains all files related to handle requests and responses. Each function send data to **model layer**.
+
+
+#### models
+Model layer works with business logic that determine how data can be created, stored and chanded. Each function gets a database schema related from **schema layer**.
+
+
+#### persistence
+The purpose of this layer is to validate and serializate data between **routes layer** and **controllers layer**. 
+
+
+#### routes
+This layer sets routing configuration for each endpoint and works in conjunction with **persistence layer** and **controllers layer**.
+
+
+#### schema
+Schema layer has all database schema from the project. These schemas are retrieved to **model layer**.
+
+
+#### test
+Required layer to test all relevant project code to get the most possible **coverage**.
