@@ -34,7 +34,7 @@ const deleteTaskById = async (id) => {
     }
     return true;
   } catch (err) {
-    throw boom.boomify(err);
+    return false;
   }
 };
 
