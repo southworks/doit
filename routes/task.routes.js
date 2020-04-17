@@ -59,6 +59,24 @@ const routes = [
     url: "/tasks/:id",
     handler: taskController.deleteTaskById,
   },
+  {
+    method: "GET",
+    url: "/tasks/:id",
+    schema: {
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            id: { type: "number" },
+            name: { type: "string" },
+            is_completed: { type: "boolean" },
+            created_at: { type: "string" },
+          },
+        },
+      },
+    },
+    handler: taskController.getTaskById,
+  },
 ];
 
 module.exports = routes;
