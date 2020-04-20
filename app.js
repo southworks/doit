@@ -1,8 +1,6 @@
 const fastify = require('fastify')({ logger: true });
-const port = process.argv[2] || 8000;
 const routes = require('./routes/task.routes');
 const mongoose = require('mongoose')
-
 require('dotenv-safe').config();
 
 // Import Swagger Options
@@ -25,7 +23,7 @@ routes.forEach((route, index)=> {
 
 const start = async () => {
     try {
-        await fastify.listen(port);
+        await fastify.listen(process.env.PORT);
         fastify.swagger()
         fastify.log.info(`server listening on ${fastify.server.address().port}`);
     } catch (err) {
