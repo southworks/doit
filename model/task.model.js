@@ -46,4 +46,22 @@ const getTaskById = async (taskId) => {
   }
 };
 
-module.exports = { getAllTasks, deleteTaskById, getTaskById };
+const completeTodoById = async (id) => {
+  try {
+    let task = await taskSchema.updateOne(
+      { _id: id },
+      {
+        is_completed: true,
+      }
+    );
+    let response = JSON.parse(JSON.stringify(task));
+
+    if (response.n === 0) {
+      return false;
+    }
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+module.exports = { getAllTasks, deleteTaskById, getTaskById, completeTodoById };

@@ -54,4 +54,19 @@ const getTaskById = async (req, res) => {
     .send(result);
 };
 
-module.exports = { getAllTasks, deleteTaskById, save, getTaskById };
+const completeTodoById = async (req, res) => {
+  const id = req.params.id
+  let result = await model.completeTodoById(id);
+  if (result === false) {
+    return res
+      .code(400)
+      .header("Content-Type", "application/json; charset=utf-8")
+      .send({ error: "invalid id" });
+  }
+  return res
+    .code(200)
+    .header("Content-Type", "application/json; charset=utf-8")
+    .send({ is_completed: id });
+};
+
+module.exports = { getAllTasks, deleteTaskById, save, getTaskById, completeTodoById };
