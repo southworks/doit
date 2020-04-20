@@ -1,6 +1,5 @@
 const boom = require('boom');
 const repository = require('../repository/task.repository');
-const Task = require('../model/task.model');
 
 const getAllTasks = async (req, res) => {
   var page = Number(req.query.page);
@@ -13,22 +12,15 @@ const getAllTasks = async (req, res) => {
 };
 
 const save = (req, res) => {
-  try {
-    const task = new Task({
-      name: req.body.name,
-      is_completed: req.body.is_completed
-    });
+  let result = repository.save(req.body, (result) => {
+    let code = result.code;
+    delete result.code;
 
-    task.save();
-
-    res.send({
-      id: task._id,
-      name: task.name,
-      is_completed: task.is_completed
-    });
-  } catch (err) {
-    throw boom.boomify(err);
-  }
+    return res
+      .code(code)
+      .header('Content-Type', 'application/json; charset=utf-8')
+      .send(result);
+  });
 };
 
 const deleteTaskById = async (req, res) => {
