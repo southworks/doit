@@ -2,10 +2,10 @@ const taskController = require("../controllers/task.controller");
 
 /*
     List all the TODOs and with pagination => GET "/all"
-    Get a TODO by Id                       => GET "/todo/:id"
-    Logical delete a TODO by id            => DELETE "/todo/:id"
+    Get a TODO by Id                       => GET "/tasks/:id"
+    Logical delete a TODO by id            => DELETE "/tasks/:id"
     Save a TODO                            => POST "/newtodo/"
-    Complete a TODO                        => POST "/todo/:id"
+    Complete a TODO                        => POST "/tasks/:id"
 */
 
 const routes = [
@@ -79,7 +79,25 @@ const routes = [
       },
     },
     handler: taskController.getTaskById,
+  },  
+  {
+    method: "POST",
+    url: "/tasks/:id",
+    schema: {
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            id: { type: "number" },
+            name: { type: "string" },
+            is_completed: { type: "boolean" },
+          },
+        },
+      },
+    },
+    handler: taskController.completeTodoById,
   },
+
 ];
 
 module.exports = routes;
