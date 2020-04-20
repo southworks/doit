@@ -5,6 +5,7 @@
 "use strict";
 
 const fastify = require("../app");
+const repository = require('../repository/task.repository');
 
 describe("server test", () => {
   afterAll(() => {
@@ -59,6 +60,32 @@ describe("server test", () => {
 
     expect(response.statusCode).toBe(200);
     expect(payload.items).toHaveLength(payload.count);
+    done();
+  });
+
+  test("GET to /tasks w/parameters should be retrieve same items as using repository function", async (done) => {
+    const page = 1;
+    const limit = 5;
+
+    const response = await fastify.inject({
+      method: "GET",
+      url: "/tasks",
+      query: {
+        page: `${page}`,
+        limit: `${limit}`,
+      },
+    });
+
+    const payload = JSON.parse(response.payload);
+
+    expect(response.statusCode).toBe(200);
+    expect(payload.items).toHaveLength(5);
+
+    const repositoryResponse = JSON.parse(await repository.getAllTasks(page, limit));
+
+    expect(repositoryResponse.items).toHaveLength(5);
+    expect(repositoryResponse.items).toStrictEqual(payload.items);
+
     done();
   });
 });
