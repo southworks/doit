@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "ajv": "^6.12.2",
     "boom": "^7.3.0",
     "dotenv-safe": "^8.2.0",
     "fastify": "^2.13.1",
