@@ -1,6 +1,20 @@
 const fastify = require('fastify')({ logger: true });
 const routes = require('./routes/task.routes');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const Ajv = require('ajv');
+
+const ajv = new Ajv({
+    removeAdditional: true,
+    useDefaults: true,
+    coerceTypes: true,
+    allErrors: true,
+    nullable: true
+});
+
+fastify.setSchemaCompiler(function (schema) {
+    return ajv.compile(schema);
+});
+
 require('dotenv-safe').config();
 
 // Import Swagger Options

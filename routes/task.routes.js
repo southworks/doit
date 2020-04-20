@@ -1,4 +1,5 @@
-const taskController = require("../controllers/task.controller");
+const taskController = require('../controllers/task.controller');
+const Joi = require('@hapi/joi');
 
 /*
     List all the TODOs and with pagination => GET "/all"
@@ -10,38 +11,36 @@ const taskController = require("../controllers/task.controller");
 
 const routes = [
   {
-    method: "GET",
-    url: "/tasks",
+    method: 'GET',
+    url: '/tasks',
     schema: {
       response: {
         200: {
-          type: "array",
+          type: 'array',
           items: {
-            type: "object",
+            type: 'object',
             properties: {
-              id: { type: "number" },
-              name: { type: "string" },
-              is_completed: { type: "boolean" },
-            },
-          },
-        },
-      },
+              id: { type: 'number' },
+              name: { type: 'string' },
+              is_completed: { type: 'boolean' }
+            }
+          }
+        }
+      }
     },
-    handler: taskController.getAllTasks,
+    handler: taskController.getAllTasks
   },
   {
-    method: "POST",
-    url: "/tasks",
+    method: 'POST',
+    url: '/tasks',
     schema: {
-      body: {
-        type: "object",
-        properties: {
-          id: { type: "string" },
-          name: { type: "string" },
-          is_completed: { type: "boolean" },
-        },
-        required: ["name"],
-      },
+      body: Joi.object({
+        name: Joi.string()
+          .min(2)
+          .example('Buy paper')
+          .required(),
+        is_completed: Joi.bool().required()
+      }),
       response: {
         201: {
           type: "object",
@@ -65,15 +64,16 @@ const routes = [
             statusCode: { type: "number" },
             error: { type: "string" },
             message: { type: "string" },
-          },
-        },
-      },
+          }
+        }
+      }
     },
-    handler: taskController.save,
+    schemaCompiler: schema => data => schema.validate(data),
+    handler: taskController.save
   },
   {
-    method: "DELETE",
-    url: "/tasks/:id",
+    method: 'DELETE',
+    url: '/tasks/:id',
     schema: {
       description: 'DELETE a todo',
       params: {
@@ -86,15 +86,15 @@ const routes = [
         }
       }
     },
-    handler: taskController.deleteTaskById,
+    handler: taskController.deleteTaskById
   },
   {
-    method: "GET",
-    url: "/tasks/:id",
+    method: 'GET',
+    url: '/tasks/:id',
     schema: {
       response: {
         200: {
-          type: "object",
+          type: 'object',
           properties: {
             id: { type: "number" },
             name: { type: "string" },
@@ -117,8 +117,8 @@ const routes = [
         }
       }
     },
-    handler: taskController.getTaskById,
-  },  
+    handler: taskController.getTaskById
+  },
   {
     /*
     method: "PUT",
@@ -126,7 +126,7 @@ const routes = [
     schema: {
       response: {
         200: {
-          type: "object",
+          type: 'object',
           properties: {
             completed: { type: "string" },
           },
