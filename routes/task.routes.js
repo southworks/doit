@@ -45,7 +45,7 @@ const routes = [
         201: {
           type: "object",
           properties: {
-            id: { type: "number" },
+            id: { type: "string" },
             name: { type: "string" },
             is_completed: { type: "boolean" },
           },
