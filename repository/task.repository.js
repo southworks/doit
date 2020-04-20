@@ -47,7 +47,7 @@ const getTaskById = async taskId => {
 
 const completeTodoById = async id => {
   try {
-    let task = await taskSchema.updateOne(
+    let task = await model.updateOne(
       { _id: id },
       {
         is_completed: true
