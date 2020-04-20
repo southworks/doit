@@ -36,6 +36,7 @@ const routes = [
       body: {
         type: "object",
         properties: {
+          id: { type: "string" },
           name: { type: "string" },
           is_completed: { type: "boolean" },
         },
@@ -43,6 +44,14 @@ const routes = [
       },
       response: {
         201: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+            name: { type: "string" },
+            is_completed: { type: "boolean" },
+          },
+        },
+        200: {
           type: "object",
           properties: {
             id: { type: "string" },
