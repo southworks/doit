@@ -58,7 +58,7 @@ const completeTodoById = async (req, res) => {
   return res
     .code(200)
     .header("Content-Type", "application/json; charset=utf-8")
-    .send({ is_completed: id });
+    .send({ task_completed: id });
 };
 
 module.exports = { getAllTasks, deleteTaskById, save, getTaskById, completeTodoById };
