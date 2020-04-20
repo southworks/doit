@@ -5,7 +5,7 @@ const taskController = require("../controllers/task.controller");
     Get a TODO by Id                       => GET "/tasks/:id"
     Logical delete a TODO by id            => DELETE "/tasks/:id"
     Save a TODO                            => POST "/newtodo/"
-    Complete a TODO                        => POST "/tasks/:id"
+    Complete a TODO                        => PUT "/tasks/:id"
 */
 
 const routes = [
@@ -82,6 +82,7 @@ const routes = [
             id: { type: "number" },
             name: { type: "string" },
             is_completed: { type: "boolean" },
+            deleted: { type: "boolean" },
             created_at: { type: "string" },
           },
         },
@@ -102,7 +103,7 @@ const routes = [
     handler: taskController.getTaskById,
   },  
   {
-    method: "POST",
+    method: "PUT",
     url: "/tasks/:id",
     schema: {
       response: {
