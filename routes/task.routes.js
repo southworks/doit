@@ -59,6 +59,14 @@ const routes = [
             is_completed: { type: "boolean" },
           },
         },
+        400: {
+          type: "object",
+          properties: {
+            statusCode: { type: "number" },
+            error: { type: "string" },
+            message: { type: "string" },
+          },
+        },
       },
     },
     handler: taskController.save,
