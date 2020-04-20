@@ -66,7 +66,6 @@ const completeTodoById = async id => {
 
 const save = async (data, callback) => {
   model.count({ _id: data.id }, function (err, count) {
-    console.log(count);
     if (count > 0) {
       update(data, callback);
     } else {
@@ -98,7 +97,6 @@ const create = async (data, callback) => {
 
 const update = async (data, callback) => {
   try {
-    console.log(data);
     await model.updateOne(
       { _id: data.id },
       {
