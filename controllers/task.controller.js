@@ -1,6 +1,6 @@
-const boom = require("boom");
-const model = require("../model/task.model");
-const Task = require("../schema/task.schema");
+const boom = require('boom');
+const repository = require('../repository/task.repository');
+const Task = require('../model/task.model');
 
 const getAllTasks = async (req, res) => {
   var page = Number(req.query.page);
@@ -8,15 +8,15 @@ const getAllTasks = async (req, res) => {
 
   return res
     .code(200)
-    .header("Content-Type", "application/json; charset=utf-8")
-    .send(await model.getAllTasks(page, limit));
+    .header('Content-Type', 'application/json; charset=utf-8')
+    .send(await repository.getAllTasks(page, limit));
 };
 
 const save = (req, res) => {
   try {
     const task = new Task({
       name: req.body.name,
-      is_completed: req.body.is_completed,
+      is_completed: req.body.is_completed
     });
 
     task.save();
@@ -24,7 +24,7 @@ const save = (req, res) => {
     res.send({
       id: task._id,
       name: task.name,
-      is_completed: task.is_completed,
+      is_completed: task.is_completed
     });
   } catch (err) {
     throw boom.boomify(err);
@@ -32,31 +32,31 @@ const save = (req, res) => {
 };
 
 const deleteTaskById = async (req, res) => {
-  const id = req.params.id
-  let result = await model.deleteTaskById(id);
+  const id = req.params.id;
+  let result = await repository.deleteTaskById(id);
   if (result === false) {
     return res
       .code(400)
-      .header("Content-Type", "application/json; charset=utf-8")
-      .send({ error: "invalid id" });
+      .header('Content-Type', 'application/json; charset=utf-8')
+      .send({ error: 'invalid id' });
   }
   return res
     .code(200)
-    .header("Content-Type", "application/json; charset=utf-8")
+    .header('Content-Type', 'application/json; charset=utf-8')
     .send({ deleted_id: id });
 };
 
 const getTaskById = async (req, res) => {
-  const result = await model.getTaskById(req.params.id);
+  const result = await repository.getTaskById(req.params.id);
   return res
     .code(200)
-    .header("Content-Type", "application/json; charset=utf-8")
+    .header('Content-Type', 'application/json; charset=utf-8')
     .send(result);
 };
 
 const completeTodoById = async (req, res) => {
   const id = req.params.id
-  let result = await model.completeTodoById(id);
+  let result = await repository.completeTodoById(id);
   if (result === false) {
     return res
       .code(400)
