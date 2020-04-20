@@ -57,8 +57,17 @@ const routes = [
   {
     method: "DELETE",
     url: "/tasks/:id",
-    params: {
-        id: { type: 'string' }
+    schema: {
+      description: 'DELETE a todo',
+      params: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            description: 'Task id'
+          }
+        }
+      }
     },
     handler: taskController.deleteTaskById,
   },
@@ -77,6 +86,18 @@ const routes = [
           },
         },
       },
+    },
+    schema: {
+      description: 'Get by ID',
+      params: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            description: 'Task id'
+          }
+        }
+      }
     },
     handler: taskController.getTaskById,
   },  
@@ -97,7 +118,6 @@ const routes = [
     },
     handler: taskController.completeTodoById,
   },
-
 ];
 
 module.exports = routes;
