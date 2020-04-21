@@ -56,14 +56,6 @@ const completeTodoById = async id => {
     );
     let response = JSON.parse(JSON.stringify(task));
 
-    //console.log("\nTarea es task: " + task.name + "\n");
-    //console.log("\nTarea es response: " + reponse.name + "\n");
-    //console.log("\nTarea es json string response: " + JSON.stringify(reponse.name) + "\n");
-    //console.log("\nTarea es json parse response: " + JSON.parse(reponse.name) + "\n");
-    //console.log("\nTarea es json strin task " + JSON.stringify(task.name) + "\n");
-    //console.log("\nTarea es: sjon parse task" + JSON.parse(task.name) + "\n");
-    //console.log("\nCantidad: " + response.nModified + "\n");
-
     if (response.nModified === 0) {
       return false;
     }
