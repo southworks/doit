@@ -6,7 +6,7 @@ const getAllTasks = async (page, limit) => {
   if (limit === 0) limit = 3;
 
   try {
-    var totalItems = (await model.count());
+    var totalItems = await model.count();
     var items = await model
       .find()
       .limit(limit)
@@ -66,57 +66,63 @@ const completeTodoById = async id => {
   }
 };
 
-const save = async (data, callback) => {
-  model.count({ _id: data.id }, function (err, count) {
-    if (count > 0) {
-      update(data, callback);
-    } else {
-      create(data, callback);
-    }
-  });
-
-};
-
-const create = async (data, callback) => {
-  try {
-    const task = new model({
-      name: data.name,
-      is_completed: data.is_completed
-    });
-
-    await task.save();
-
-    callback({
-      id: task._id,
-      name: task.name,
-      is_completed: task.is_completed,
-      code: 201
-    });
-  } catch (err) {
-    throw boom.boomify(err);
+const save = async data => {
+  const taskExists = await model.findById(data.id);
+  if (taskExists !== null) {
+    return update(data);
+  } else {
+    return create(data);
   }
 };
 
-const update = async (data, callback) => {
-  try {
-    await model.updateOne(
-      { _id: data.id },
+const create = async data => {
+  return new model({
+    name: data.name,
+    is_completed: data.is_completed
+  })
+    .save()
+    .then(task => {
+      return {
+        success: 'TODO created!',
+        code: 201,
+        data: {
+          id: task._id,
+          name: task.name,
+          is_completed: task.is_completed
+        }
+      };
+    })
+    .catch(err => {
+      throw boom.boomify(err);
+    });
+};
+
+const update = async data => {
+  const id = data.id;
+  return model
+    .updateOne(
+      { _id: id },
       {
         name: data.name,
         is_completed: data.is_completed
       }
-    );
-
-    let task = await model.findById(data.id);
-    callback({
-      id: task._id,
-      name: task.name,
-      is_completed: task.is_completed,
-      code: 200
+    )
+    .then(() => {
+      return model.findById(id).then(task => {
+        return {
+          success: 'TODO updated!',
+          code: 200,
+          data: {
+            id: task._id,
+            name: task.name,
+            is_completed: task.is_completed
+          }
+        };
+      });
+    })
+    .catch(err => {
+      throw boom.boomify(err);
     });
-  } catch (err) {
-    throw boom.boomify(err);
-  }
 };
 
 module.exports = { getAllTasks, deleteTaskById, getTaskById, completeTodoById, save };
