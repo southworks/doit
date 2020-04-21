@@ -26,7 +26,7 @@ This file will declare the events that will be call during the Jest testing life
     /**
      * Connect to the in-memory database.
      */
-    module.exports.connect = async () => {
+    module.exports.connectDatabase = async () => {
         const uri = await mongodb.getConnectionString();
     
         const mongooseOpts = {
@@ -67,7 +67,7 @@ This file will declare the events that will be call during the Jest testing life
     const port = 8000;
     const routes = require('../routes/task.routes');
     
-    module.exports.start = async () => {
+    module.exports.startFastify = async () => {
         try {
             await fastify.listen(port);
             fastify.log.info(`server listening on ${fastify.server.address().port}`);
@@ -81,7 +81,7 @@ This file will declare the events that will be call during the Jest testing life
         fastify.route(route);
     })
     
-    module.exports.close = () =>{
+    module.exports.closeFastify = () =>{
         fastify.close();
     }
     
@@ -93,16 +93,16 @@ Please use the following example as reference:
     ````
     const taskModel = require("../model/task.model");
 
-    const createProducts = async () => {
-       for(const item of items){
-            await taskModel.create(item);
+    const createTasks = async () => {
+       for(const task of tasks){
+            await taskModel.create(task);
        }
     };
     
-    module.exports = createProducts;
+    module.exports = createTasks;
     
     /*DATA*/
-    const items = [
+    const tasks = [
     	{
     		name: "Hacer asado",
     		is_completed: false,
@@ -125,20 +125,20 @@ Please use the following example as reference:
     const dbHandler = require('./db-handler');
     
     /* Import seed functions */
-    const createProducts = require('./seed');
+    const createTasks = require('./seed');
     
     /* Import moongose model */
     const taskModel = require("../model/task.model");
     
     /* Connect to a new in-memory database before running any tests. */
     beforeAll(async () => {
-        await dbHandler.start();
-        await dbHandler.connect();
+        await dbHandler.startFastify();
+        await dbHandler.connectDatabase();
     });
     
     /* Seed the database. */
     beforeEach(async () => {
-        await createProducts();
+        await createTasks();
     });
     
     /* Clear all test data after every test. */
@@ -147,7 +147,7 @@ Please use the following example as reference:
     /* Remove and close the db and server. */
     afterAll(async () => {
         await dbHandler.closeDatabase();
-        dbHandler.close();
+        dbHandler.closeDatabase();
     });
     
     describe("test", () => {
