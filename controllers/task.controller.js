@@ -11,16 +11,10 @@ const getAllTasks = async (req, res) => {
     .send(await repository.getAllTasks(page, limit));
 };
 
-const save = (req, res) => {
-  let result = repository.save(req.body, (result) => {
-    let code = result.code;
-    delete result.code;
-
-    return res
-      .code(code)
-      .header('Content-Type', 'application/json; charset=utf-8')
-      .send(result);
-  });
+const save = async (req, res) => {
+  const result = await repository.save(req.body);
+  if (result.success) return res.code(result.code).send(result.data);
+  else res.response('Unable to save TODO').code(400);
 };
 
 const deleteTaskById = async (req, res) => {
@@ -58,8 +52,8 @@ const completeTodoById = async (req, res) => {
   if (result === false) {
     return res
       .code(400)
-      .header("Content-Type", "application/json; charset=utf-8")
-      .send({ error: "Invalid ID" });
+      .header('Content-Type', 'application/json; charset=utf-8')
+      .send({ error: 'Invalid ID' });
   }
   
   return res

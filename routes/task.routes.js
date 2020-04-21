@@ -35,37 +35,12 @@ const routes = [
     url: '/tasks',
     schema: {
       body: Joi.object({
+        id: Joi.string(),
         name: Joi.string()
           .min(2)
           .required(),
         is_completed: Joi.bool()
-      }),
-      response: {
-        201: {
-          type: "object",
-          properties: {
-            id: { type: "string" },
-            name: { type: "string" },
-            is_completed: { type: "boolean" },
-          },
-        },
-        200: {
-          type: "object",
-          properties: {
-            id: { type: "string" },
-            name: { type: "string" },
-            is_completed: { type: "boolean" },
-          },
-        },
-        400: {
-          type: "object",
-          properties: {
-            statusCode: { type: "number" },
-            error: { type: "string" },
-            message: { type: "string" },
-          }
-        }
-      }
+      })
     },
     schemaCompiler: schema => data => schema.validate(data),
     handler: taskController.save
@@ -95,14 +70,14 @@ const routes = [
         200: {
           type: 'object',
           properties: {
-            id: { type: "number" },
-            name: { type: "string" },
-            is_completed: { type: "boolean" },
-            deleted: { type: "boolean" },
-            created_at: { type: "string" },
-          },
-        },
-      },
+            id: { type: 'number' },
+            name: { type: 'string' },
+            is_completed: { type: 'boolean' },
+            deleted: { type: 'boolean' },
+            created_at: { type: 'string' }
+          }
+        }
+      }
     },
     schema: {
       description: 'Get by ID',
@@ -140,26 +115,26 @@ const routes = [
     },
     handler: taskController.completeTodoById,
     */
-    method: "PUT",
-    url: "/tasks/:id",
+    method: 'PUT',
+    url: '/tasks/:id',
     schema: {
       response: {
         200: {
           type: 'object',
           properties: {
-            completed: { type: "string" },
-          },
+            completed: { type: 'string' }
+          }
         },
         400: {
-          type: "object",
+          type: 'object',
           properties: {
-            error: { type: "string" },
-          },
+            error: { type: 'string' }
+          }
         },
       },
     },
-    handler: taskController.completeTodoById,
-  },
+    handler: taskController.completeTodoById
+  }
 ];
 
 module.exports = routes;
