@@ -1,15 +1,44 @@
 'use strict';
 
-const fastify = require('../app');
+const dbHandler = require('./db-handler');
+const createTasks = require('./seed');
 const model = require('../model/task.model');
+
+/**
+ * Connect to a new in-memory database before running any tests.
+ */
+beforeAll(async () => {
+  await dbHandler.startFastify();
+  await dbHandler.connectDatabase();
+});
+
+/**
+* Seed the database.
+*/
+beforeEach(async () => {
+  await createTasks();
+});
+
+/**
+* Clear all test data after every test.
+*/
+afterEach(async () => await dbHandler.clearDatabase());
+
+/**
+* Remove and close the db and server.
+*/
+afterAll(async () => {
+  await dbHandler.closeDatabase();
+  dbHandler.closeFastify();
+});
 
 describe('server test', () => {
   afterAll(() => {
-    fastify.close();
+    dbHandler.fs.close();
   });
 
   test('request body validation', async (done) => {
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: 'POST',
       url: '/tasks'
     });
@@ -22,7 +51,7 @@ describe('server test', () => {
   });
 
   test('request name validation', async (done) => {
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: 'POST',
       url: '/tasks',
       body: {
@@ -37,7 +66,7 @@ describe('server test', () => {
   });
 
   test('request is_completed validation', async (done) => {
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: 'POST',
       url: '/tasks',
       body: {
@@ -53,7 +82,7 @@ describe('server test', () => {
   });
 
   test('success response', async (done) => {
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: 'POST',
       url: '/tasks',
       body: {
@@ -73,7 +102,7 @@ describe('server test', () => {
   });
 
   test('success creation without is_completed', async (done) => {
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: 'POST',
       url: '/tasks',
       body: {
@@ -100,7 +129,7 @@ describe('server test', () => {
 
 
   test('success creation with is_completed', async (done) => {
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: 'POST',
       url: '/tasks',
       body: {
@@ -127,7 +156,7 @@ describe('server test', () => {
       new: true
     });
 
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: 'POST',
       url: '/tasks',
       body: {
@@ -153,7 +182,7 @@ describe('server test', () => {
       new: true
     });
 
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: 'POST',
       url: '/tasks',
       body: {
