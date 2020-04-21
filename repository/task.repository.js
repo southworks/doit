@@ -50,8 +50,7 @@ const completeTodoById = async id => {
     let task = await model.updateOne(
       { _id: id, deleted: false },
       {
-        //is_completed: true
-        is_completed: false
+        is_completed: true
       }
     );
     let response = JSON.parse(JSON.stringify(task));
