@@ -40,6 +40,12 @@ const deleteTaskById = async (req, res) => {
 
 const getTaskById = async (req, res) => {
   const result = await repository.getTaskById(req.params.id);
+  if(!result){
+    return res
+    .code(400)
+    .header('Content-Type', 'application/json; charset=utf-8')
+    .send({ error: 'invalid id' });
+  }
   return res
     .code(200)
     .header('Content-Type', 'application/json; charset=utf-8')
