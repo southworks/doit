@@ -22,9 +22,9 @@ const swagger = require('./config/swagger')
 
 // Connect to DB
 mongoose.connect(process.env.CONNECTION_STRING, {
-useNewUrlParser: true
-}).then(() => console.log("MongoDB connected…"))
-.catch(err => console.log(err));
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).catch(err => console.log(err));
 
 // Register Swagger
 fastify.register(require('fastify-swagger'), swagger.options)

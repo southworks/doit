@@ -6,7 +6,7 @@ const getAllTasks = async (page, limit) => {
   if (limit === 0) limit = 3;
 
   try {
-    var totalItems = await model.count();
+    var totalItems = await model.countDocuments();
     var items = await model
       .find()
       .limit(limit)
