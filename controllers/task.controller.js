@@ -54,7 +54,6 @@ const getTaskById = async (req, res) => {
 
 const completeTodoById = async (req, res) => {
   const id = req.params.id
-    
   let result = await repository.completeTodoById(id);
   if (result === false) {
     return res
@@ -63,22 +62,10 @@ const completeTodoById = async (req, res) => {
       .send({ error: "Invalid ID" });
   }
   
-  const resultName = await repository.getTaskById(req.params.id);
-  const name = resultName.name;
-  const isDeleted = resultName.deleted;
-  //console.log("\nLa tarea: " + name + " -- Borrada: " + isDeleted);
-  if (isDeleted) {
-    return res
-      .code(409)
-      .header("Content-Type", "application/json; charset=utf-8")
-      .send({ deleted: "Task [" + name + "] is no longer in DB" });
-  }
-  
   return res
     .code(200)
     .header("Content-Type", "application/json; charset=utf-8")        
-    .send({ completed:  name + " - Completed"});
-    //.send({ completed:  id + " - Completed"});
+    .send({ completed:  id + " - Completed"});        
 };
 
 module.exports = { getAllTasks, deleteTaskById, save, getTaskById, completeTodoById };
