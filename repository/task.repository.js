@@ -48,17 +48,28 @@ const getTaskById = async taskId => {
 const completeTodoById = async id => {
   try {
     let task = await model.updateOne(
-      { _id: id },
+      { _id: id, deleted: false },
       {
-        is_completed: true
+        //is_completed: true
+        is_completed: false
       }
     );
     let response = JSON.parse(JSON.stringify(task));
 
-    if (response.n === 0) {
+    //console.log("\nTarea es task: " + task.name + "\n");
+    //console.log("\nTarea es response: " + reponse.name + "\n");
+    //console.log("\nTarea es json string response: " + JSON.stringify(reponse.name) + "\n");
+    //console.log("\nTarea es json parse response: " + JSON.parse(reponse.name) + "\n");
+    //console.log("\nTarea es json strin task " + JSON.stringify(task.name) + "\n");
+    //console.log("\nTarea es: sjon parse task" + JSON.parse(task.name) + "\n");
+    //console.log("\nCantidad: " + response.nModified + "\n");
+
+    if (response.nModified === 0) {
       return false;
     }
     return true;
+
+  
   } catch (err) {
     return false;
   }

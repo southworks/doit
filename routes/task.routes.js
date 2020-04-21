@@ -119,7 +119,6 @@ const routes = [
     handler: taskController.getTaskById
   },
   {
-    /*
     method: "PUT",
     url: "/tasks/:id",
     schema: {
@@ -136,33 +135,6 @@ const routes = [
             error: { type: "string" },
           },
         },
-      },
-    },
-    handler: taskController.completeTodoById,
-    */
-    method: "PUT",
-    url: "/tasks/:id",
-    schema: {
-      response: {
-        200: {
-          type: "object",
-          properties: {
-            completed: { type: "string" },
-          },
-        },
-        400: {
-          type: "object",
-          properties: {
-            error: { type: "string" },
-          },
-        },
-        409: {
-          type: "object",
-          properties: {
-            deleted: { type: "string" },
-          },
-        },
-
       },
     },
     handler: taskController.completeTodoById,
