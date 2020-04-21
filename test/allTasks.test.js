@@ -1,11 +1,37 @@
-/**
- * @jest-environment node
- */
-
 "use strict";
 
-const fastify = require("../app");
-const repository = require('../repository/task.repository');
+const dbHandler = require('./db-handler');
+const createTasks = require('./seed');
+const taskModel = require("../model/task.model");
+const repository = require("../repository/task.repository");
+
+/**
+ * Connect to a new in-memory database before running any tests.
+ */
+beforeAll(async () => {
+    await dbHandler.startFastify();
+    await dbHandler.connectDatabase();
+});
+
+/**
+ * Seed the database.
+ */
+beforeEach(async () => {
+    await createTasks();
+});
+
+/**
+ * Clear all test data after every test.
+ */
+afterEach(async () => await dbHandler.clearDatabase());
+
+/**
+ * Remove and close the db and server.
+ */
+afterAll(async () => {
+    await dbHandler.closeDatabase();
+    dbHandler.closeFastify();
+});
 
 describe("server test", () => {
   afterAll(() => {
@@ -13,7 +39,7 @@ describe("server test", () => {
   });
 
   test("GET to /tasks without parameters should retrieve the default value (3)", async (done) => {
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: "GET",
       url: "/tasks",
       query: {
@@ -30,11 +56,11 @@ describe("server test", () => {
   });
 
   test("GET to /tasks w/parameters should retrieve the requested limit (6)", async (done) => {
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: "GET",
       url: "/tasks",
       query: {
-        page: "2",
+        page: "0",
         limit: "6",
       },
     });
@@ -47,7 +73,7 @@ describe("server test", () => {
   });
 
   test("GET to /tasks w/limit higher than the total of tasks should retrieve the total of tasks", async (done) => {
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: "GET",
       url: "/tasks",
       query: {
@@ -64,10 +90,10 @@ describe("server test", () => {
   });
 
   test("GET to /tasks w/parameters should be retrieve same items as using repository function", async (done) => {
-    const page = 1;
+    const page = 0;
     const limit = 5;
 
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: "GET",
       url: "/tasks",
       query: {
