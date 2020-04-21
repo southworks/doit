@@ -97,25 +97,81 @@ describe('server test', () => {
     
     done();
   });
-});
 
-test('success creation with is_completed', async (done) => {
-  const response = await fastify.inject({
-    method: 'POST',
-    url: '/tasks',
-    body: {
-      name: "Test task",
-      is_completed: true
-    }
+
+  test('success creation with is_completed', async (done) => {
+    const response = await fastify.inject({
+      method: 'POST',
+      url: '/tasks',
+      body: {
+        name: "Test task",
+        is_completed: true
+      }
+    });
+  
+    expect(response.statusCode).toBe(201);
+  
+    var obj = JSON.parse(response.payload);
+    let testTask = await model.findById(obj.id);
+  
+    expect(testTask.is_completed).toBe(obj.is_completed);
+    expect(testTask.is_completed).toBe(true);
+    
+    done();
+  });  
+
+  test('succes update name by ID', async (done) => {
+    const filter = { _id: '5e9739707fe8cd0ee69e8a2e' };
+    const update = { name: "anothername" };
+    let task = await model.findOneAndUpdate(filter, update, {
+      new: true
+    });
+
+    const response = await fastify.inject({
+      method: 'POST',
+      url: '/tasks',
+      body: {
+        id: "5e9739707fe8cd0ee69e8a2e",
+        name: "Test task"
+      }
+    });
+    let obj = JSON.parse(response.payload);
+    const doesTaskExist = await model.exists({ _id: "5e9739707fe8cd0ee69e8a2e" });
+    expect(doesTaskExist).toBe(true);
+    let testTask = await model.findById(obj.id);
+    expect(testTask.name).toBe(obj.name);
+    expect(response.statusCode).toBe(200);
+
+    done();
   });
 
-  expect(response.statusCode).toBe(201);
 
-  var obj = JSON.parse(response.payload);
-  let testTask = await model.findById(obj.id);
+  test('succes update is_completed by ID', async (done) => {
+    const filter = { _id: '5e9739707fe8cd0ee69e8a2e' };
+    const update = { is_completed: true };
+    let task = await model.findOneAndUpdate(filter, update, {
+      new: true
+    });
 
-  expect(testTask.is_completed).toBe(obj.is_completed);
-  expect(testTask.is_completed).toBe(true);
-  
-  done();
+    const response = await fastify.inject({
+      method: 'POST',
+      url: '/tasks',
+      body: {
+        id: "5e9739707fe8cd0ee69e8a2e",
+        name: "Test task",
+        is_completed: false
+      }
+    });
+    let obj = JSON.parse(response.payload);
+    const doesTaskExist = await model.exists({ _id: "5e9739707fe8cd0ee69e8a2e" });
+    expect(doesTaskExist).toBe(true);
+    let testTask = await model.findById(obj.id);
+    expect(testTask.is_completed).toBe(false);
+    expect(response.statusCode).toBe(200);
+
+    done();
+  });
+
+
 });
+
