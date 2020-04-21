@@ -38,7 +38,7 @@ const routes = [
         name: Joi.string()
           .min(2)
           .required(),
-        is_completed: Joi.bool().required()
+        is_completed: Joi.bool()
       }),
       response: {
         201: {
