@@ -37,7 +37,6 @@ const routes = [
       body: Joi.object({
         name: Joi.string()
           .min(2)
-          .example('Buy paper')
           .required(),
         is_completed: Joi.bool().required()
       }),
