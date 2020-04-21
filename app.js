@@ -1,4 +1,4 @@
-const fastify = require('fastify')({ logger: true });
+const fastify = require('fastify')({ logger: false });
 const routes = require('./routes/task.routes');
 const mongoose = require('mongoose');
 const Ajv = require('ajv');
