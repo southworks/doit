@@ -1,7 +1,37 @@
-'use strict';
+"use strict";
 
-const fastify = require('../app');
-const model = require('../model/task.model');
+const dbHandler = require('./db-handler');
+const createTasks = require('./seed');
+const model = require("../model/task.model");
+const repository = require("../repository/task.repository");
+
+/**
+ * Connect to a new in-memory database before running any tests.
+ */
+beforeAll(async () => {
+    await dbHandler.startFastify();
+    await dbHandler.connectDatabase();
+});
+
+/**
+ * Seed the database.
+ */
+beforeEach(async () => {
+    await createTasks();
+});
+
+/**
+ * Clear all test data after every test.
+ */
+afterEach(async () => await dbHandler.clearDatabase());
+
+/**
+ * Remove and close the db and server.
+ */
+afterAll(async () => {
+    await dbHandler.closeDatabase();
+    dbHandler.closeFastify();
+});
 
 describe('server test', () => {
   afterAll(() => {
@@ -9,25 +39,32 @@ describe('server test', () => {
   });
 
   test('existing id delete', async (done) => {
-    const response = await fastify.inject({
+    let newTask = await new model({
+      name : "New unit test",
+    }).save();
+
+    const response = await dbHandler.fs.inject({
       method: 'DELETE',
-      url: '/tasks/5e973b72a24e7a0fdfb28626'      
+      url: '/tasks/' + newTask._id      
     });
-    const doesTaskExist = await model.exists({ _id: "5e973b72a24e7a0fdfb28626" });
+    const doesTaskExist = await model.exists({ _id: newTask._id  });
     expect(doesTaskExist).toBe(true);
     expect(response.statusCode).toBe(200);
-    expect(response.payload).toBe("{\"deleted_id\":\"5e973b72a24e7a0fdfb28626\"}");
-    const deletedTask = await model.findById({ _id: "5e973b72a24e7a0fdfb28626" });
+    expect(response.payload).toBe("{\"deleted_id\":\""+ newTask._id +"\"}");
+    const deletedTask = await model.findById({ _id: newTask._id  });
     expect(deletedTask.deleted).toBe(true);
     done();
   });
 
   test('unexisting id delete', async (done) => {
-    const response = await fastify.inject({
-      method: 'DELETE',
-      url: '/tasks/5e973b72a24e7a0fdfb28627',
+    let newTask = await new model({
+      name : "New unit test",
     });
-    const doesTaskExist = await model.exists({ _id: "5e973b72a24e7a0fdfb28627" });
+    const response = await dbHandler.fs.inject({
+      method: 'DELETE',
+      url: '/tasks/'+ newTask._id,
+    });
+    const doesTaskExist = await model.exists({ _id: newTask._id });
     expect(doesTaskExist).toBe(false);
     expect(response.statusCode).toBe(400);
     expect(response.payload).toBe("{\"error\":\"invalid id\"}");
@@ -35,7 +72,7 @@ describe('server test', () => {
   });
 
   test('empty id delete', async (done) => {
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: 'DELETE',
       url: '/tasks/',
     });
@@ -46,7 +83,7 @@ describe('server test', () => {
   });
 
   test('special characters id delete', async (done) => {
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: 'DELETE',
       url: '/tasks/dasdn!dk.,.?@',
     });

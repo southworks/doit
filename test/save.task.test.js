@@ -150,22 +150,21 @@ describe('server test', () => {
   });  
 
   test('succes update name by ID', async (done) => {
-    const filter = { _id: '5e9739707fe8cd0ee69e8a2e' };
-    const update = { name: "anothername" };
-    let task = await model.findOneAndUpdate(filter, update, {
-      new: true
-    });
+    let newTask = await new model({
+      name : "New unit test",
+    }).save();
 
     const response = await dbHandler.fs.inject({
       method: 'POST',
       url: '/tasks',
       body: {
-        id: "5e9739707fe8cd0ee69e8a2e",
-        name: "Test task"
+        id: newTask._id,
+        name: "New name"
       }
     });
+
     let obj = JSON.parse(response.payload);
-    const doesTaskExist = await model.exists({ _id: "5e9739707fe8cd0ee69e8a2e" });
+    const doesTaskExist = await model.exists({ _id: newTask._id });
     expect(doesTaskExist).toBe(true);
     let testTask = await model.findById(obj.id);
     expect(testTask.name).toBe(obj.name);
@@ -176,23 +175,22 @@ describe('server test', () => {
 
 
   test('succes update is_completed by ID', async (done) => {
-    const filter = { _id: '5e9739707fe8cd0ee69e8a2e' };
-    const update = { is_completed: true };
-    let task = await model.findOneAndUpdate(filter, update, {
-      new: true
-    });
+    let newTask = await new model({
+      name : "New unit test",
+      is_completed : true
+    }).save();
 
     const response = await dbHandler.fs.inject({
       method: 'POST',
       url: '/tasks',
       body: {
-        id: "5e9739707fe8cd0ee69e8a2e",
-        name: "Test task",
+        id: newTask._id,
+        name: newTask.name,
         is_completed: false
       }
     });
     let obj = JSON.parse(response.payload);
-    const doesTaskExist = await model.exists({ _id: "5e9739707fe8cd0ee69e8a2e" });
+    const doesTaskExist = await model.exists({ _id: newTask._id });
     expect(doesTaskExist).toBe(true);
     let testTask = await model.findById(obj.id);
     expect(testTask.is_completed).toBe(false);
