@@ -20,26 +20,27 @@ const getAllTasks = async (page, limit) => {
 
 const deleteTaskById = async id => {
   return model
-    .updateOne(
-      { _id: id },
-      {
-        deleted: true
-      }
-    )
-    .then(() => {
-      return model.findById(id).then(task => {
-        if (task === null)
-          return {
-            message: 'An error occurred, try again later',
-            code: 400
-          };
-        else
+    .findById(id)
+    .then(task => {
+      if (task === null)
+        return {
+          message: 'An error occurred, try again later',
+          code: 400
+        };
+      return model
+        .updateOne(
+          { _id: id },
+          {
+            deleted: true
+          }
+        )
+        .then(() => {
           return {
             message: 'TODO deleted!',
-            id: task.id,
+            id: id,
             code: 200
           };
-      });
+        });
     })
     .catch(err => {
       throw boom.boomify(err);

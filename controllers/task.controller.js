@@ -14,7 +14,7 @@ const getAllTasks = async (req, res) => {
 const save = async (req, res) => {
   const result = await repository.save(req.body);
 
-  if (!result.success) {
+  if (result.success) {
     return res.code(result.code).send(result.data);
   } else {
     res.send('Error: unable to save TODO').code(400);
