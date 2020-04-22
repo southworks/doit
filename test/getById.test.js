@@ -1,11 +1,37 @@
-/**
- * @jest-environment node
- */
-
 "use strict";
 
-const fastify = require("../app");
-const model = require('../model/task.model');
+const dbHandler = require('./db-handler');
+const createTasks = require('./seed');
+const model = require("../model/task.model");
+const repository = require("../repository/task.repository");
+
+/**
+ * Connect to a new in-memory database before running any tests.
+ */
+beforeAll(async () => {
+    await dbHandler.startFastify();
+    await dbHandler.connectDatabase();
+});
+
+/**
+ * Seed the database.
+ */
+beforeEach(async () => {
+    await createTasks();
+});
+
+/**
+ * Clear all test data after every test.
+ */
+afterEach(async () => await dbHandler.clearDatabase());
+
+/**
+ * Remove and close the db and server.
+ */
+afterAll(async () => {
+    await dbHandler.closeDatabase();
+    dbHandler.closeFastify();
+});
 
 describe("server test", () => {
   afterAll(() => {
@@ -13,43 +39,33 @@ describe("server test", () => {
   });
 
   test("GET to /tasks/:id to retrieve task data", async (done) => {
-    const task_id = '5e973aaa0daea30fa1fb1407'
+    let newTask = await new model({
+      name : "New unit test",
+    }).save();
 
-    const response = await fastify.inject({
+    const task_id = newTask._id
+
+    const response = await dbHandler.fs.inject({
       method: "GET",
       url: `/tasks/${task_id}`,
     });
 
-    const payload = JSON.parse(response.payload);
+    let obj = JSON.parse(response.payload)
 
     const doesTaskExist = await model.exists({ _id: task_id });
     expect(doesTaskExist).toBe(true);
     expect(response.statusCode).toBe(200);
-    expect(payload._id).toBe(task_id);
-    done();
-  });
-
-  test("GET to /tasks/:id to retrieve task data", async (done) => {
-    const task_id = '5e973aaa0daea30fa1fb1407'
-
-    const response = await fastify.inject({
-      method: "GET",
-      url: `/tasks/${task_id}`,
-    });
-
-    const payload = JSON.parse(response.payload);
-
-    const doesTaskExist = await model.exists({ _id: task_id });
-    expect(doesTaskExist).toBe(true);
-    expect(response.statusCode).toBe(200);
-    expect(payload._id).toBe(task_id);
+    expect(obj._id).toBe(newTask.id);
     done();
   });
 
   test("GET to /tasks/:id to retrieve task data with no existing id", async (done) => {
-    const task_id = '5e973aaa0daea30fa1fb1408'
+    let newTask = await new model({
+      name : "New unit test",
+    });
+    const task_id = newTask._id
 
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: "GET",
       url: `/tasks/${task_id}`,
     });
@@ -64,7 +80,7 @@ describe("server test", () => {
 
   test('special characters Get by id', async (done) => {
     const task_id = 'dasdn!dk.,.?@'
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: "GET",
       url: `/tasks/${task_id}`,
     });
@@ -75,7 +91,7 @@ describe("server test", () => {
 
   test('special characters Get by empy id', async (done) => {
     const task_id = ''
-    const response = await fastify.inject({
+    const response = await dbHandler.fs.inject({
       method: "GET",
       url: `/tasks/${task_id}`,
     });
