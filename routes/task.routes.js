@@ -1,33 +1,19 @@
 const taskController = require('../controllers/task.controller');
 const Joi = require('@hapi/joi');
 
-/*
-    List all the TODOs and with pagination => GET "/all"
-    Get a TODO by Id                       => GET "/tasks/:id"
-    Logical delete a TODO by id            => DELETE "/tasks/:id"
-    Save a TODO                            => POST "/newtodo/"
-    Complete a TODO                        => PUT "/tasks/:id"
-*/
-
 const routes = [
   {
     method: 'GET',
     url: '/tasks',
-    schema: {
-      response: {
-        200: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'number' },
-              name: { type: 'string' },
-              is_completed: { type: 'boolean' }
-            }
-          }
-        }
-      }
-    },
+    schema: Joi.array().items(
+      Joi.object({
+        deleted: Joi.boolean(),
+        id: Joi.string(),
+        name: Joi.string(),
+        is_completed: Joi.boolean(),
+        created_at: Joi.date()
+      })
+    ),
     handler: taskController.getAllTasks
   },
   {
@@ -79,18 +65,13 @@ const routes = [
         }
       }
     },
-    schema: {
-      description: 'Get by ID',
-      params: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'string',
-            description: 'Task id'
-          }
-        }
-      }
-    },
+    schema: Joi.object({
+      deleted: Joi.boolean(),
+      id: Joi.string(),
+      name: Joi.string(),
+      is_completed: Joi.boolean(),
+      created_at: Joi.date()
+    }),
     handler: taskController.getTaskById
   },
   {
