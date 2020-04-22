@@ -5,15 +5,35 @@ const routes = [
   {
     method: 'GET',
     url: '/tasks',
-    schema: Joi.array().items(
-      Joi.object({
-        deleted: Joi.boolean(),
-        id: Joi.string(),
-        name: Joi.string(),
-        is_completed: Joi.boolean(),
-        created_at: Joi.date()
-      })
-    ),
+    schema: {
+      query: {
+        page: {type: 'number'},
+        limit: {type: 'number'},
+      },
+      response: {
+        200: {
+          description:'OK',
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              name: { type: 'string' },
+              is_completed: { type: 'boolean' },
+              deleted: { type: 'boolean' },
+              created_at: { type: 'string' }
+            }
+          }
+        },
+        400: {
+          description: 'Error',
+          type: 'object',
+          properties: {
+            error: { type: 'string' }
+          }
+        }
+      }
+    },
     handler: taskController.getAllTasks
   },
   {
@@ -52,26 +72,36 @@ const routes = [
     method: 'GET',
     url: '/tasks/:id',
     schema: {
+      params: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            description: 'Task id'
+          }
+        }
+      },
       response: {
         200: {
+            description:'OK',
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              name: { type: 'string' },
+              is_completed: { type: 'boolean' },
+              deleted: { type: 'boolean' },
+              created_at: { type: 'string' }
+            }
+        },
+        400: {
+          description:'Error',
           type: 'object',
           properties: {
-            id: { type: 'number' },
-            name: { type: 'string' },
-            is_completed: { type: 'boolean' },
-            deleted: { type: 'boolean' },
-            created_at: { type: 'string' }
+            error: { type: 'string' }
           }
         }
       }
     },
-    schema: Joi.object({
-      deleted: Joi.boolean(),
-      id: Joi.string(),
-      name: Joi.string(),
-      is_completed: Joi.boolean(),
-      created_at: Joi.date()
-    }),
     handler: taskController.getTaskById
   },
   {
