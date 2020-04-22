@@ -19,22 +19,31 @@ const getAllTasks = async (page, limit) => {
 };
 
 const deleteTaskById = async id => {
-  try {
-    let task = await model.updateOne(
+  return model
+    .updateOne(
       { _id: id },
       {
         deleted: true
       }
-    );
-    let response = JSON.parse(JSON.stringify(task));
-
-    if (response.n === 0) {
-      return false;
-    }
-    return true;
-  } catch (err) {
-    return false;
-  }
+    )
+    .then(() => {
+      return model.findById(id).then(task => {
+        if (task === null)
+          return {
+            message: 'An error occurred, try again later',
+            code: 400
+          };
+        else
+          return {
+            message: 'TODO deleted!',
+            id: task.id,
+            code: 200
+          };
+      });
+    })
+    .catch(err => {
+      throw boom.boomify(err);
+    });
 };
 
 const getTaskById = async taskId => {

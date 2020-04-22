@@ -14,26 +14,26 @@ const getAllTasks = async (req, res) => {
 const save = async (req, res) => {
   const result = await repository.save(req.body);
 
-  if (result.success) {
+  if (!result.success) {
     return res.code(result.code).send(result.data);
   } else {
-    res.response('Unable to save TODO').code(400);
+    res.send('Error: unable to save TODO').code(400);
   }
 };
 
 const deleteTaskById = async (req, res) => {
   const id = req.params.id;
+
   let result = await repository.deleteTaskById(id);
-  if (result === false) {
-    return res
-      .code(400)
-      .header('Content-Type', 'application/json; charset=utf-8')
-      .send({ error: 'invalid id' });
+
+  if (result.message) {
+    return res.code(result.code).send({
+      message: result.message,
+      id: result.id
+    });
+  } else {
+    return res.code(400).send('An error occurred, try again later');
   }
-  return res
-    .code(200)
-    .header('Content-Type', 'application/json; charset=utf-8')
-    .send({ deleted_id: id });
 };
 
 const getTaskById = async (req, res) => {
