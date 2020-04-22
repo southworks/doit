@@ -59,8 +59,6 @@ const completeTodoById = async id => {
       return false;
     }
     return true;
-
-  
   } catch (err) {
     return false;
   }
@@ -78,18 +76,14 @@ const save = async data => {
 const create = async data => {
   return new model({
     name: data.name,
-    is_completed: data.is_completed
+    is_completed: data.is_completed || false
   })
     .save()
     .then(task => {
       return {
         success: 'TODO created!',
         code: 201,
-        data: {
-          id: task._id,
-          name: task.name,
-          is_completed: task.is_completed
-        }
+        data: mapTask(task)
       };
     })
     .catch(err => {
@@ -104,7 +98,7 @@ const update = async data => {
       { _id: id },
       {
         name: data.name,
-        is_completed: data.is_completed
+        is_completed: data.is_completed || false
       }
     )
     .then(() => {
@@ -112,17 +106,21 @@ const update = async data => {
         return {
           success: 'TODO updated!',
           code: 200,
-          data: {
-            id: task._id,
-            name: task.name,
-            is_completed: task.is_completed
-          }
+          data: mapTask(task)
         };
       });
     })
     .catch(err => {
       throw boom.boomify(err);
     });
+};
+
+const mapTask = task => {
+  return {
+    id: task._id,
+    name: task.name,
+    is_completed: task.is_completed
+  };
 };
 
 module.exports = { getAllTasks, deleteTaskById, getTaskById, completeTodoById, save };
