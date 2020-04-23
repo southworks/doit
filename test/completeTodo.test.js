@@ -41,25 +41,19 @@ describe("Complete a TODO task testing - Success", () => {
     fastify.close();
   });
 
-  test('Check COMPLETED attribute as FALSE', async (done) => {
-    
-    const task = await model.findById({ _id: taskId });
-    const parsedTask = JSON.parse(JSON.stringify(task));
-    
-    expect(parsedTask.is_completed).toBe(false);
-    
-    done();
-  });
-
   test('SEND a Complete TODO and check for COMPLETED attribute as TRUE', async (done) => {
     
+    var task = await model.findById({ _id: taskId });
+    var parsedTask = JSON.parse(JSON.stringify(task));    
+    expect(parsedTask.is_completed).toBe(false);
+
     const response = await dbHandler.fs.inject({
       method: 'PUT',
       url: '/tasks/' + taskId
     });
 
-    const task = await model.findById({ _id: taskId });
-    const parsedTask = JSON.parse(JSON.stringify(task));        
+    task = await model.findById({ _id: taskId });
+    parsedTask = JSON.parse(JSON.stringify(task));        
 
     expect(parsedTask.is_completed).toBe(true);
     expect(response.statusCode).toBe(200);
@@ -123,9 +117,6 @@ describe("Complete a TODO Endpoint testing - FAILS", () => {
     expect(response.statusCode).toBe(405);
     expect(response.payload).toBe("{\"taskDeleted\":\"999999999999999999999999 - Already deleted\"}");    
 
-    task = await model.findById({ _id: nonExistentTaskId });
-    expect(task).toBe(null);    
-    
     done();
   });
 });
