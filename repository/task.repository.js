@@ -43,10 +43,7 @@ const deleteTaskById = async id => {
         });
     })
     .catch(err => {
-      return {
-        message: err,
-        code: 500
-      };
+      throw boom.boomify(err);
     });
 };
 
