@@ -16,7 +16,6 @@ The DELETE /tasks/{id} endpoint allows you to soft delete a specific task using 
 | ------------ | ------------ |
 | 200  | The operation was executed correctly, it returns a JSON indicating the deleted ID   |
 | 400  |  Indicates the occurrence of an error related to the ID |
-| 500  |  Internal Server error |
 
 #### Response example
 ```JSON
@@ -29,14 +28,6 @@ The DELETE /tasks/{id} endpoint allows you to soft delete a specific task using 
 #### Error example
 ```JSON
 	{
-  			"message": "An error occurred, try again later"
-     }
-```
-
-```JSON
-	{
-			"statusCode": 500,
- 			"error": "Internal Server Error",
- 			"message": "Cast to ObjectId failed for value ..."
+  			"message": "An error occurred, check the ID or try again later"
      }
 ```

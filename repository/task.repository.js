@@ -24,7 +24,7 @@ const deleteTaskById = async id => {
     .then(task => {
       if (task === null)
         return {
-          message: 'An error occurred, try again later',
+          message: 'An error occurred, check the ID or try again later',
           code: 400
         };
       return model
@@ -43,7 +43,10 @@ const deleteTaskById = async id => {
         });
     })
     .catch(err => {
-      throw boom.boomify(err);
+      return {
+        message: 'An error occurred, check the ID or try again later',
+        code: 400
+      };
     });
 };
 
