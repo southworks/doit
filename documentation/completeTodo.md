@@ -37,7 +37,7 @@ The COMPLETE a TODO /tasks/{id} endpoint allows to mark a specific task as Compl
 
 ```JSON
 	{
-			"statusCode": 105,
+			"statusCode": 405,
  			"error": "Internal Server Error",
  			"message": "taskDeleted:  5e9739707fe8cd0ee69e8a2e - Already deleted"
      }
