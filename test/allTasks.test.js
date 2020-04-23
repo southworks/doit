@@ -114,4 +114,17 @@ describe("server test", () => {
 
     done();
   });
+
+  test("GET to /tasks without any parameter should retrieve the total of tasks", async (done) => {
+    const response = await dbHandler.fs.inject({
+      method: "GET",
+      url: "/tasks",
+    });
+
+    const payload = JSON.parse(response.payload);
+
+    expect(response.statusCode).toBe(200);
+    expect(payload.items).toHaveLength(payload.count);
+    done();
+  });
 });
