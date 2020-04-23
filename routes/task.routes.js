@@ -7,8 +7,8 @@ const routes = [
     url: '/tasks',
     schema: {
       query: {
-        page: {type: 'string'},
-        limit: {type: 'string'},
+        page: {type: 'number'},
+        limit: {type: 'number'},
       },
       response: {
         200: {
@@ -86,7 +86,7 @@ const routes = [
             description:'OK',
             type: 'object',
             properties: {
-              _id: { type: 'string' },
+              id: { type: 'string' },
               name: { type: 'string' },
               is_completed: { type: 'boolean' },
               deleted: { type: 'boolean' },
@@ -105,27 +105,6 @@ const routes = [
     handler: taskController.getTaskById
   },
   {
-    /*
-    method: "PUT",
-    url: "/tasks/:id",
-    schema: {
-      response: {
-        200: {
-          type: 'object',
-          properties: {
-            completed: { type: "string" },
-          },
-        },
-        400: {
-          type: "object",
-          properties: {
-            error: { type: "string" },
-          },
-        },
-      },
-    },
-    handler: taskController.completeTodoById,
-    */
     method: 'PUT',
     url: '/tasks/:id',
     schema: {
@@ -139,7 +118,19 @@ const routes = [
         400: {
           type: 'object',
           properties: {
-            error: { type: 'string' }
+            errorId: { type: 'string' }
+          }
+        },
+        405: {
+          type: 'object',
+          properties: {
+            taskDeleted: { type: 'string' }
+          }
+        },
+        500: {
+          type: 'object',
+          properties: {
+            errorCatch: { type: 'string' }
           }
         },
       },

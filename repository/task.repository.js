@@ -57,20 +57,35 @@ const getTaskById = async taskId => {
 
 const completeTodoById = async id => {
   try {
-    let task = await model.updateOne(
+    //Bring the record to check if task is deleted
+    let task = await model.findById(id);
+    let parsedTask = JSON.parse(JSON.stringify(task));
+    
+    //check existence of the record if not return 400
+    if (parsedTask === null) return 400;
+    
+    //check "deleted" field in order to update or not
+    if (parsedTask.deleted === true) return 405;
+    
+    //let taskName = parsedTask.name;
+
+    //update the record
+    task = await model.updateOne(
       { _id: id, deleted: false },
       {
         is_completed: true
       }
     );
-    let response = JSON.parse(JSON.stringify(task));
+    parsedTask = JSON.parse(JSON.stringify(task));
 
-    if (response.nModified === 0) {
-      return false;
-    }
-    return true;
+    //check if it was updateded
+    if (parsedTask.nModified === 0) return 500;
+    
+    //succefull operation
+    return 200;      
+
   } catch (err) {
-    return false;
+    return (400);
   }
 };
 
