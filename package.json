@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "jest --runInBand --forceExit --detectOpenHandles ./test"
+    "test": "jest --runInBand --forceExit --detectOpenHandles ./test",
+    "lint": "eslint **/*.js"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,8 @@
     "mongoose": "^5.9.9"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-node": "^11.1.0",
     "mongodb-memory-server": "^6.5.2"
   },
   "jest": {
