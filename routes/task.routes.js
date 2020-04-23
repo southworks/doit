@@ -7,8 +7,8 @@ const routes = [
     url: '/tasks',
     schema: {
       query: {
-        page: {type: 'number'},
-        limit: {type: 'number'},
+        page: {type: 'string'},
+        limit: {type: 'string'},
       },
       response: {
         200: {
@@ -86,7 +86,7 @@ const routes = [
             description:'OK',
             type: 'object',
             properties: {
-              id: { type: 'string' },
+              _id: { type: 'string' },
               name: { type: 'string' },
               is_completed: { type: 'boolean' },
               deleted: { type: 'boolean' },
