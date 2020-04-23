@@ -1,5 +1,6 @@
 const taskController = require('../controllers/task.controller');
 const Joi = require('@hapi/joi');
+Joi.objectId = require('joi-objectid')(Joi)
 
 const routes = [
   {
@@ -57,7 +58,7 @@ const routes = [
     schema: {
       description: 'DELETE a todo',
       params: Joi.object({
-        id: Joi.string().required()
+        id: Joi.objectId().required(),
       })
     },
     schemaCompiler: schema => data => schema.validate(data),
