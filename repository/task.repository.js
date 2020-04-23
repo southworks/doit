@@ -44,8 +44,8 @@ const deleteTaskById = async id => {
     })
     .catch(err => {
       return {
-        message: 'An error occurred, check the ID or try again later',
-        code: 400
+        message: err,
+        code: 500
       };
     });
 };

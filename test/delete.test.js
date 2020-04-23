@@ -89,7 +89,7 @@ describe('server test', () => {
     });
 
     expect(response.statusCode).toBe(400);
-    expect(response.payload).toBe( "{\"message\":\"An error occurred, check the ID or try again later\"}");
+    expect(response.payload).toBe( "{\"statusCode\":400,\"error\":\"Bad Request\",\"message\":\"\\\"id\\\" with value \\\"dasdn!dk.,.\\\" fails to match the valid mongo id pattern\"}");
     done();
   });
 
