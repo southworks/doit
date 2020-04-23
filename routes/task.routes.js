@@ -56,16 +56,11 @@ const routes = [
     url: '/tasks/:id',
     schema: {
       description: 'DELETE a todo',
-      params: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'string',
-            description: 'Task id'
-          }
-        }
-      }
+      params: Joi.object({
+        id: Joi.string().required()
+      })
     },
+    schemaCompiler: schema => data => schema.validate(data),
     handler: taskController.deleteTaskById
   },
   {

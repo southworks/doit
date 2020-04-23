@@ -50,7 +50,7 @@ describe('server test', () => {
     const doesTaskExist = await model.exists({ _id: newTask._id  });
     expect(doesTaskExist).toBe(true);
     expect(response.statusCode).toBe(200);
-    expect(response.payload).toBe("{\"deleted_id\":\""+ newTask._id +"\"}");
+    expect(response.payload).toBe("{\"message\":\"TODO deleted!\",\"id\":\""+ newTask._id +"\"}");
     const deletedTask = await model.findById({ _id: newTask._id  });
     expect(deletedTask.deleted).toBe(true);
     done();
@@ -67,7 +67,7 @@ describe('server test', () => {
     const doesTaskExist = await model.exists({ _id: newTask._id });
     expect(doesTaskExist).toBe(false);
     expect(response.statusCode).toBe(400);
-    expect(response.payload).toBe("{\"error\":\"invalid id\"}");
+    expect(response.payload).toBe("{\"message\":\"An error occurred, check the ID or try again later\"}");
     done();
   });
 
@@ -78,7 +78,7 @@ describe('server test', () => {
     });
 
     expect(response.statusCode).toBe(400);
-    expect(response.payload).toBe("{\"error\":\"invalid id\"}");
+    expect(response.payload).toBe( "{\"statusCode\":400,\"error\":\"Bad Request\",\"message\":\"\\\"id\\\" is not allowed to be empty\"}");
     done();
   });
 
@@ -89,7 +89,7 @@ describe('server test', () => {
     });
 
     expect(response.statusCode).toBe(400);
-    expect(response.payload).toBe("{\"error\":\"invalid id\"}");
+    expect(response.payload).toBe( "{\"message\":\"An error occurred, check the ID or try again later\"}");
     done();
   });
 
