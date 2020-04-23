@@ -52,4 +52,11 @@ const items = [
 		created_at: "2020-04-15T17:27:58.983Z",
 		deleted: false,
 	},
+	{		
+		_id: '999999999999999999999999',
+		name: "Test with forced ID",
+		is_completed: false,
+		created_at: "2020-04-15T17:27:58.983Z",
+		deleted: false,
+	},
 ];

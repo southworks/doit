@@ -53,17 +53,35 @@ const getTaskById = async (req, res) => {
 const completeTodoById = async (req, res) => {
   const id = req.params.id;
   let result = await repository.completeTodoById(id);
-  if (result === false) {
+
+  if (result === 200) {
+    return res
+      .code(200)
+      .header('Content-Type', 'application/json; charset=utf-8')
+      .send({ completed: id + ' - Task Completed' });
+  }
+  
+  if (result === 400) {
     return res
       .code(400)
       .header('Content-Type', 'application/json; charset=utf-8')
-      .send({ error: 'Invalid ID' });
+      .send({ errorId: 'Invalid ID' });
+  }
+  
+  if (result === 405) {
+    return res
+      .code(405)
+      .header('Content-Type', 'application/json; charset=utf-8')
+      .send({ taskDeleted:  id + ' - Already deleted'});        
   }
 
-  return res
-    .code(200)
-    .header('Content-Type', 'application/json; charset=utf-8')
-    .send({ completed: id + ' - Completed' });
+  if (result === 500) {
+    return res
+      .code(500)
+      .header('Content-Type', 'application/json; charset=utf-8')
+      .send({ errorCatch:  'serverError'});        
+  }
+
 };
 
 module.exports = { getAllTasks, deleteTaskById, save, getTaskById, completeTodoById };
