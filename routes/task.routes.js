@@ -100,7 +100,7 @@ const routes = [
     },
     handler: taskController.getTaskById
   },
-  {
+  {    
     method: 'PUT',
     url: '/tasks/:id',
     schema: {
@@ -131,7 +131,7 @@ const routes = [
         },
       },
     },
-    handler: taskController.completeTodoById
+    handler: taskController.completeTodoById    
   }
 ];
 
