@@ -1,0 +1,17 @@
+{
+  "name": "unit-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --runInBand --forceExit --detectOpenHandles ./test"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^25.4.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}
