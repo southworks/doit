@@ -1,7 +1,7 @@
 const taskController = require('../controllers/task.controller');
 const Joi = require('@hapi/joi');
-Joi.objectId = require('joi-objectid')(Joi)
-const { error_schema, getTasksResOK_schema } = require('../schemas/task.schemas')
+Joi.objectId = require('joi-objectid')(Joi);
+const { error_schema, getTasksResOK_schema } = require('../schemas/task.schemas');
 
 
 const routes = [
