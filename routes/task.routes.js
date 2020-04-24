@@ -1,6 +1,8 @@
 const taskController = require('../controllers/task.controller');
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi)
+const { error_schema, getTasksResOK_schema } = require('../schemas/task.schemas')
+
 
 const routes = [
   {
@@ -12,27 +14,8 @@ const routes = [
         limit: {type: 'string'},
       },
       response: {
-        200: {
-          description:'OK',
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' },
-              name: { type: 'string' },
-              is_completed: { type: 'boolean' },
-              deleted: { type: 'boolean' },
-              created_at: { type: 'string' }
-            }
-          }
-        },
-        400: {
-          description: 'Error',
-          type: 'object',
-          properties: {
-            error: { type: 'string' }
-          }
-        }
+        200: getTasksResOK_schema.swagger,
+        400: error_schema.swagger
       }
     },
     handler: taskController.getAllTasks
