@@ -79,7 +79,7 @@ const routes = [
     schemaCompiler: schema => data => schema.validate(data),
     handler: taskController.getTaskById
   },
-  {    
+  {
     method: 'PUT',
     url: '/tasks/:id',
     schema: {
@@ -110,7 +110,7 @@ const routes = [
         },
       },
     },
-    handler: taskController.completeTodoById    
+    handler: taskController.completeTodoById
   }
 ];
 

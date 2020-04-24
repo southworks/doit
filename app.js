@@ -29,7 +29,7 @@ mongoose.connect(process.env.CONNECTION_STRING, {
 // Register Swagger
 fastify.register(require('fastify-swagger'), swagger.options);
 
-routes.forEach((route, index)=> {
+routes.forEach((route)=> {
     fastify.route(route);
 });
 
@@ -42,7 +42,7 @@ const start = async () => {
         fastify.log.info(`server listening on ${fastify.server.address().port}`);
     } catch (err) {
         fastify.log.error(err);
-        process.exit(1);
+        throw err;
     }
 };
 

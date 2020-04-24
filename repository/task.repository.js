@@ -1,9 +1,19 @@
 const model = require('../model/task.model');
 const boom = require('boom');
 
+const mapTask = task => ({
+  id: task._id,
+  name: task.name,
+  is_completed: task.is_completed
+});
+
 const getAllTasks = async (page, limit) => {
-  if (page === 0) {page = 0;}
-  if (limit === 0) {limit = 3;}
+  if (page === 0) {
+    page = 0;
+  }
+  if (limit === 0) {
+    limit = 3;
+  }
 
   try {
     let totalItems = await model.countDocuments();
@@ -18,14 +28,16 @@ const getAllTasks = async (page, limit) => {
   }
 };
 
-const deleteTaskById = async id => model
+const deleteTaskById = async id =>
+  model
     .findById(id)
     .then(task => {
-      if (task === null)
-        {return {
+      if (task === null) {
+        return {
           message: 'An error occurred, check the ID or try again later',
           code: 400
-        };}
+        };
+      }
       return model
         .updateOne(
           { _id: id },
@@ -34,10 +46,10 @@ const deleteTaskById = async id => model
           }
         )
         .then(() => ({
-            message: 'TODO deleted!',
-            id: id,
-            code: 200
-          }));
+          message: 'TODO deleted!',
+          id: id,
+          code: 200
+        }));
     })
     .catch(err => {
       throw boom.boomify(err);
@@ -56,13 +68,17 @@ const completeTodoById = async id => {
     //Bring the record to check if task is deleted
     let task = await model.findById(id);
     let parsedTask = JSON.parse(JSON.stringify(task));
-    
+
     //check existence of the record if not return 400
-    if (parsedTask === null) return 400;
-    
+    if (parsedTask === null) {
+      return 400;
+    }
+
     //check "deleted" field in order to update or not
-    if (parsedTask.deleted === true) return 405;
-    
+    if (parsedTask.deleted === true) {
+      return 405;
+    }
+
     //let taskName = parsedTask.name;
 
     //update the record
@@ -75,35 +91,29 @@ const completeTodoById = async id => {
     parsedTask = JSON.parse(JSON.stringify(task));
 
     //check if it was updateded
-    if (parsedTask.nModified === 0) return 500;
-    
+    if (parsedTask.nModified === 0) {
+      return 500;
+    }
+
     //succefull operation
-    return 200;      
-
+    return 200;
   } catch (err) {
-    return (400);
+    return 400;
   }
 };
 
-const save = async data => {
-  const taskExists = await model.findById(data.id);
-  if (taskExists !== null) {
-    return update(data);
-  } else {
-    return create(data);
-  }
-};
-
-const create = async data => new model({
-    name: data.name,
-    is_completed: data.is_completed || false
-  })
+const create = async data =>
+  model
+    .create({
+      name: data.name,
+      is_completed: data.is_completed || false
+    })
     .save()
     .then(task => ({
-        success: 'TODO created!',
-        code: 201,
-        data: mapTask(task)
-      }))
+      success: 'TODO created!',
+      code: 201,
+      data: mapTask(task)
+    }))
     .catch(err => {
       throw boom.boomify(err);
     });
@@ -118,20 +128,25 @@ const update = async data => {
         is_completed: data.is_completed || false
       }
     )
-    .then(() => model.findById(id).then(task => ({
-          success: 'TODO updated!',
-          code: 200,
-          data: mapTask(task)
-        })))
+    .then(() =>
+      model.findById(id).then(task => ({
+        success: 'TODO updated!',
+        code: 200,
+        data: mapTask(task)
+      }))
+    )
     .catch(err => {
       throw boom.boomify(err);
     });
 };
 
-const mapTask = task => ({
-    id: task._id,
-    name: task.name,
-    is_completed: task.is_completed
-  });
+const save = async data => {
+  const taskExists = await model.findById(data.id);
+  if (taskExists !== null) {
+    return update(data);
+  } else {
+    return create(data);
+  }
+};
 
 module.exports = { getAllTasks, deleteTaskById, getTaskById, completeTodoById, save };

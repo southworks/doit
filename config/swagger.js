@@ -1,4 +1,4 @@
-exports.options = {
+module.exports.options = {
   routePrefix: '/documentation',
   swagger: {
     info: {
