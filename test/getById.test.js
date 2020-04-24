@@ -84,8 +84,8 @@ describe("server test", () => {
       method: "GET",
       url: `/tasks/${task_id}`,
     });
-
-    expect(response.statusCode).toBe(500);
+    expect(response.payload).toBe( "{\"statusCode\":400,\"error\":\"Bad Request\",\"message\":\"\\\"id\\\" with value \\\"dasdn!dk.,.\\\" fails to match the valid mongo id pattern\"}");
+    expect(response.statusCode).toBe(400);
     done();
   });
 
@@ -95,8 +95,8 @@ describe("server test", () => {
       method: "GET",
       url: `/tasks/${task_id}`,
     });
-
-    expect(response.statusCode).toBe(500);
+    expect(response.payload).toBe( "{\"statusCode\":400,\"error\":\"Bad Request\",\"message\":\"\\\"id\\\" is not allowed to be empty\"}");
+    expect(response.statusCode).toBe(400);
     done();
   });
 

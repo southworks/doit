@@ -68,36 +68,12 @@ const routes = [
     method: 'GET',
     url: '/tasks/:id',
     schema: {
-      params: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'string',
-            description: 'Task id'
-          }
-        }
-      },
-      response: {
-        200: {
-            description:'OK',
-            type: 'object',
-            properties: {
-              _id: { type: 'string' },
-              name: { type: 'string' },
-              is_completed: { type: 'boolean' },
-              deleted: { type: 'boolean' },
-              created_at: { type: 'string' }
-            }
-        },
-        400: {
-          description:'Error',
-          type: 'object',
-          properties: {
-            error: { type: 'string' }
-          }
-        }
-      }
+      description: 'DELETE a todo',
+      params: Joi.object({
+        id: Joi.objectId().required(),
+      })
     },
+    schemaCompiler: schema => data => schema.validate(data),
     handler: taskController.getTaskById
   },
   {    
