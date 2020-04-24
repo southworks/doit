@@ -14,7 +14,7 @@ module.exports.connectDatabase = async () => {
     };
 
     await mongoose.connect(uri, mongooseOpts);
-}
+};
 
 /**
  * Drop database, close the connection and stop mongodb.
@@ -23,7 +23,7 @@ module.exports.closeDatabase = async () => {
     await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
     await mongodb.stop();
-}
+};
 
 /**
  * Remove all the data for all db collections.
@@ -35,7 +35,7 @@ module.exports.clearDatabase = async () => {
         const collection = collections[key];
         await collection.deleteMany();
     }
-}
+};
 
 
 const fastify = require('fastify')({ logger: false });
@@ -49,14 +49,14 @@ module.exports.startFastify = async () => {
         fastify.log.error(err);
         process.exit(1);
     }
-}
+};
 
 routes.forEach((route, index)=> {
     fastify.route(route);
-})
+});
 
 module.exports.closeFastify = () =>{
     fastify.close();
-}
+};
 
-module.exports.fs = fastify
+module.exports.fs = fastify;

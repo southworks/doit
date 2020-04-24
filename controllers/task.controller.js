@@ -2,8 +2,8 @@ const boom = require('boom');
 const repository = require('../repository/task.repository');
 
 const getAllTasks = async (req, res) => {
-  var page = Number(req.query.page);
-  var limit = Number(req.query.limit);
+  let page = Number(req.query.page);
+  let limit = Number(req.query.limit);
 
   return res
     .code(200)

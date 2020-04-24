@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
 const dbHandler = require('./db-handler');
 const createTasks = require('./seed');
-const taskModel = require("../model/task.model");
-const repository = require("../repository/task.repository");
+const taskModel = require('../model/task.model');
+const repository = require('../repository/task.repository');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -33,18 +33,18 @@ afterAll(async () => {
     dbHandler.closeFastify();
 });
 
-describe("server test", () => {
+describe('server test', () => {
   afterAll(() => {
     fastify.close();
   });
 
-  test("GET to /tasks without parameters should retrieve the default value (3)", async (done) => {
+  test('GET to /tasks without parameters should retrieve the default value (3)', async (done) => {
     const response = await dbHandler.fs.inject({
-      method: "GET",
-      url: "/tasks",
+      method: 'GET',
+      url: '/tasks',
       query: {
-        page: "",
-        limit: "",
+        page: '',
+        limit: '',
       },
     });
 
@@ -55,13 +55,13 @@ describe("server test", () => {
     done();
   });
 
-  test("GET to /tasks w/parameters should retrieve the requested limit (6)", async (done) => {
+  test('GET to /tasks w/parameters should retrieve the requested limit (6)', async (done) => {
     const response = await dbHandler.fs.inject({
-      method: "GET",
-      url: "/tasks",
+      method: 'GET',
+      url: '/tasks',
       query: {
-        page: "0",
-        limit: "6",
+        page: '0',
+        limit: '6',
       },
     });
 
@@ -72,13 +72,13 @@ describe("server test", () => {
     done();
   });
 
-  test("GET to /tasks w/limit higher than the total of tasks should retrieve the total of tasks", async (done) => {
+  test('GET to /tasks w/limit higher than the total of tasks should retrieve the total of tasks', async (done) => {
     const response = await dbHandler.fs.inject({
-      method: "GET",
-      url: "/tasks",
+      method: 'GET',
+      url: '/tasks',
       query: {
-        page: "0",
-        limit: "1000",
+        page: '0',
+        limit: '1000',
       },
     });
 
@@ -89,13 +89,13 @@ describe("server test", () => {
     done();
   });
 
-  test("GET to /tasks w/parameters should be retrieve same items as using repository function", async (done) => {
+  test('GET to /tasks w/parameters should be retrieve same items as using repository function', async (done) => {
     const page = 0;
     const limit = 5;
 
     const response = await dbHandler.fs.inject({
-      method: "GET",
-      url: "/tasks",
+      method: 'GET',
+      url: '/tasks',
       query: {
         page: `${page}`,
         limit: `${limit}`,

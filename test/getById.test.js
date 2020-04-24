@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
 const dbHandler = require('./db-handler');
 const createTasks = require('./seed');
-const model = require("../model/task.model");
-const repository = require("../repository/task.repository");
+const model = require('../model/task.model');
+const repository = require('../repository/task.repository');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -33,24 +33,24 @@ afterAll(async () => {
     dbHandler.closeFastify();
 });
 
-describe("server test", () => {
+describe('server test', () => {
   afterAll(() => {
     fastify.close();
   });
 
-  test("GET to /tasks/:id to retrieve task data", async (done) => {
+  test('GET to /tasks/:id to retrieve task data', async (done) => {
     let newTask = await new model({
-      name : "New unit test",
+      name : 'New unit test',
     }).save();
 
-    const task_id = newTask._id
+    const task_id = newTask._id;
 
     const response = await dbHandler.fs.inject({
-      method: "GET",
+      method: 'GET',
       url: `/tasks/${task_id}`,
     });
 
-    let obj = JSON.parse(response.payload)
+    let obj = JSON.parse(response.payload);
 
     const doesTaskExist = await model.exists({ _id: task_id });
     expect(doesTaskExist).toBe(true);
@@ -59,14 +59,14 @@ describe("server test", () => {
     done();
   });
 
-  test("GET to /tasks/:id to retrieve task data with no existing id", async (done) => {
+  test('GET to /tasks/:id to retrieve task data with no existing id', async (done) => {
     let newTask = await new model({
-      name : "New unit test",
+      name : 'New unit test',
     });
-    const task_id = newTask._id
+    const task_id = newTask._id;
 
     const response = await dbHandler.fs.inject({
-      method: "GET",
+      method: 'GET',
       url: `/tasks/${task_id}`,
     });
 
@@ -74,14 +74,14 @@ describe("server test", () => {
     const doesTaskExist = await model.exists({ _id: task_id });
     expect(doesTaskExist).toBe(false);
     expect(response.statusCode).toBe(400);
-    expect(response.payload).toBe("{\"error\":\"invalid id\"}");
+    expect(response.payload).toBe('{"error":"invalid id"}');
     done();
   });
 
   test('special characters Get by id', async (done) => {
-    const task_id = 'dasdn!dk.,.?@'
+    const task_id = 'dasdn!dk.,.?@';
     const response = await dbHandler.fs.inject({
-      method: "GET",
+      method: 'GET',
       url: `/tasks/${task_id}`,
     });
     expect(response.payload).toBe( "{\"statusCode\":400,\"error\":\"Bad Request\",\"message\":\"\\\"id\\\" with value \\\"dasdn!dk.,.\\\" fails to match the valid mongo id pattern\"}");
@@ -90,9 +90,9 @@ describe("server test", () => {
   });
 
   test('special characters Get by empy id', async (done) => {
-    const task_id = ''
+    const task_id = '';
     const response = await dbHandler.fs.inject({
-      method: "GET",
+      method: 'GET',
       url: `/tasks/${task_id}`,
     });
     expect(response.payload).toBe( "{\"statusCode\":400,\"error\":\"Bad Request\",\"message\":\"\\\"id\\\" is not allowed to be empty\"}");

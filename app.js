@@ -18,7 +18,7 @@ fastify.setSchemaCompiler(function (schema) {
 require('dotenv-safe').config();
 
 // Import Swagger Options
-const swagger = require('./config/swagger')
+const swagger = require('./config/swagger');
 
 // Connect to DB
 mongoose.connect(process.env.CONNECTION_STRING, {
@@ -27,24 +27,24 @@ mongoose.connect(process.env.CONNECTION_STRING, {
 }).catch(err => console.log(err));
 
 // Register Swagger
-fastify.register(require('fastify-swagger'), swagger.options)
+fastify.register(require('fastify-swagger'), swagger.options);
 
 routes.forEach((route, index)=> {
     fastify.route(route);
-})
+});
 
 
 
 const start = async () => {
     try {
         await fastify.listen(process.env.PORT);
-        fastify.swagger()
+        fastify.swagger();
         fastify.log.info(`server listening on ${fastify.server.address().port}`);
     } catch (err) {
         fastify.log.error(err);
         process.exit(1);
     }
-}
+};
 
 start();
 

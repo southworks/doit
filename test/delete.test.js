@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
 const dbHandler = require('./db-handler');
 const createTasks = require('./seed');
-const model = require("../model/task.model");
-const repository = require("../repository/task.repository");
+const model = require('../model/task.model');
+const repository = require('../repository/task.repository');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -40,12 +40,12 @@ describe('server test', () => {
 
   test('existing id delete', async (done) => {
     let newTask = await new model({
-      name : "New unit test",
+      name : 'New unit test',
     }).save();
 
     const response = await dbHandler.fs.inject({
       method: 'DELETE',
-      url: '/tasks/' + newTask._id      
+      url: '/tasks/' + newTask._id
     });
     const doesTaskExist = await model.exists({ _id: newTask._id  });
     expect(doesTaskExist).toBe(true);
@@ -58,7 +58,7 @@ describe('server test', () => {
 
   test('unexisting id delete', async (done) => {
     let newTask = await new model({
-      name : "New unit test",
+      name : 'New unit test',
     });
     const response = await dbHandler.fs.inject({
       method: 'DELETE',

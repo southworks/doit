@@ -2,31 +2,30 @@ const model = require('../model/task.model');
 const boom = require('boom');
 
 const getAllTasks = async (page, limit) => {
-  if (page === 0) page = 0;
-  if (limit === 0) limit = 3;
+  if (page === 0) {page = 0;}
+  if (limit === 0) {limit = 3;}
 
   try {
-    var totalItems = await model.countDocuments();
-    var items = await model
+    let totalItems = await model.countDocuments();
+    let items = await model
       .find()
       .limit(limit)
       .skip(limit * page);
 
     return JSON.stringify({ items: items, count: totalItems });
-  } catch (error) {
+  } catch (err) {
     throw boom.boomify(err);
   }
 };
 
-const deleteTaskById = async id => {
-  return model
+const deleteTaskById = async id => model
     .findById(id)
     .then(task => {
       if (task === null)
-        return {
+        {return {
           message: 'An error occurred, check the ID or try again later',
           code: 400
-        };
+        };}
       return model
         .updateOne(
           { _id: id },
@@ -34,18 +33,15 @@ const deleteTaskById = async id => {
             deleted: true
           }
         )
-        .then(() => {
-          return {
+        .then(() => ({
             message: 'TODO deleted!',
             id: id,
             code: 200
-          };
-        });
+          }));
     })
     .catch(err => {
       throw boom.boomify(err);
     });
-};
 
 const getTaskById = async taskId => {
   try {
@@ -98,23 +94,19 @@ const save = async data => {
   }
 };
 
-const create = async data => {
-  return new model({
+const create = async data => new model({
     name: data.name,
     is_completed: data.is_completed || false
   })
     .save()
-    .then(task => {
-      return {
+    .then(task => ({
         success: 'TODO created!',
         code: 201,
         data: mapTask(task)
-      };
-    })
+      }))
     .catch(err => {
       throw boom.boomify(err);
     });
-};
 
 const update = async data => {
   const id = data.id;
@@ -126,26 +118,20 @@ const update = async data => {
         is_completed: data.is_completed || false
       }
     )
-    .then(() => {
-      return model.findById(id).then(task => {
-        return {
+    .then(() => model.findById(id).then(task => ({
           success: 'TODO updated!',
           code: 200,
           data: mapTask(task)
-        };
-      });
-    })
+        })))
     .catch(err => {
       throw boom.boomify(err);
     });
 };
 
-const mapTask = task => {
-  return {
+const mapTask = task => ({
     id: task._id,
     name: task.name,
     is_completed: task.is_completed
-  };
-};
+  });
 
 module.exports = { getAllTasks, deleteTaskById, getTaskById, completeTodoById, save };

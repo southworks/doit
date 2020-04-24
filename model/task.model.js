@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const taskSchema = new mongoose.Schema({
   name: String,
@@ -7,5 +7,5 @@ const taskSchema = new mongoose.Schema({
   deleted: { type: Boolean, default: 0 },
 });
 
-module.exports = mongoose.model("Task", taskSchema);
+module.exports = mongoose.model('Task', taskSchema);
 

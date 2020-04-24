@@ -70,8 +70,8 @@ describe('server test', () => {
       method: 'POST',
       url: '/tasks',
       body: {
-        name: "Test task",
-        is_completed: "Test task"
+        name: 'Test task',
+        is_completed: 'Test task'
       }
     });
 
@@ -86,18 +86,18 @@ describe('server test', () => {
       method: 'POST',
       url: '/tasks',
       body: {
-        name: "Test task"
+        name: 'Test task'
       }
     });
 
-    var obj = JSON.parse(response.payload);
+    let obj = JSON.parse(response.payload);
     expect(response.statusCode).toBe(201);
     expect(obj).toBeInstanceOf(Object);
-    expect(obj).toHaveProperty("id");
-    expect(obj).toHaveProperty("name");
-    expect(obj).toHaveProperty("is_completed");
+    expect(obj).toHaveProperty('id');
+    expect(obj).toHaveProperty('name');
+    expect(obj).toHaveProperty('is_completed');
 
-    
+
     done();
   });
 
@@ -106,24 +106,24 @@ describe('server test', () => {
       method: 'POST',
       url: '/tasks',
       body: {
-        name: "Test task",
+        name: 'Test task',
       }
     });
 
     expect(response.statusCode).toBe(201);
 
-    var obj = JSON.parse(response.payload);
+    let obj = JSON.parse(response.payload);
     let idLenght = (obj.id.length>0) ? obj.id.length: 1;
     let testTask = await model.findById(obj.id);
-    
+
     expect(obj.id).toHaveLength(idLenght);
     expect(testTask).toBeInstanceOf(Object);
 
     expect(testTask.name).toBe(obj.name);
     expect(testTask.is_completed).toBe(obj.is_completed);
 
-    
-    
+
+
     done();
   });
 
@@ -133,25 +133,25 @@ describe('server test', () => {
       method: 'POST',
       url: '/tasks',
       body: {
-        name: "Test task",
+        name: 'Test task',
         is_completed: true
       }
     });
-  
+
     expect(response.statusCode).toBe(201);
-  
-    var obj = JSON.parse(response.payload);
+
+    let obj = JSON.parse(response.payload);
     let testTask = await model.findById(obj.id);
-  
+
     expect(testTask.is_completed).toBe(obj.is_completed);
     expect(testTask.is_completed).toBe(true);
-    
+
     done();
-  });  
+  });
 
   test('succes update name by ID', async (done) => {
     let newTask = await new model({
-      name : "New unit test",
+      name : 'New unit test',
     }).save();
 
     const response = await dbHandler.fs.inject({
@@ -159,7 +159,7 @@ describe('server test', () => {
       url: '/tasks',
       body: {
         id: newTask._id,
-        name: "New name"
+        name: 'New name'
       }
     });
 
@@ -176,7 +176,7 @@ describe('server test', () => {
 
   test('succes update is_completed by ID', async (done) => {
     let newTask = await new model({
-      name : "New unit test",
+      name : 'New unit test',
       is_completed : true
     }).save();
 
