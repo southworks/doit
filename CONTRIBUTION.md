@@ -1,4 +1,5 @@
-﻿# How to contribute to DoIT
+﻿
+# How to contribute to DoIT
 
 
 This repo is a reference and learning resource and everyone is invited to contribute, however not all PRs will be accepted automatically into the main branch (**`dev`**).
@@ -107,30 +108,30 @@ To reapply a series of changes from a  [branch](https://git-scm.com/docs/gitglos
 
 ### Layers
 
+#### config
+Contains configuration files for packages used on the project. (i.e.: Swagger configuration)
 
 #### controllers
-This layer contains all files related to handle requests and responses. Each function send data to **model layer**.
+Contains files that describes the functions to handle requests and responses. 
+Each controller function triggers functions on the **repository layer** depending on the request.
 
+#### model
+Contains all the database schemas that are part of the project. 
+These schemas describes the attributes/composition of the entities that interacts in the proyect. 
+They are call by the functions on the **repository layer**.
 
-#### models
-Model layer works with business logic that determine how data can be created, stored and chanded. Each function gets a database schema related from **schema layer**.
-
-
-#### persistence
-The purpose of this layer is to validate and serializate data between **routes layer** and **controllers layer**. 
-
+#### repository
+Contains files that describes the CRUD operations to perform.
+These CRUD functions are based on business logic to determine how the data will be created, stored nor changed. 
+Each function uses a database schema from the **model layer**.
 
 #### routes
-This layer sets routing configuration for each endpoint and works in conjunction with **persistence layer** and **controllers layer**.
-
-
-#### schema
-Schema layer has all database schema from the project. These schemas are retrieved to **model layer**.
-
+Sets the routing configuration for each endpoint.
+They will route each endpoint request to the **controller layer** in order to handle it and prepare a response.
 
 #### test
-Required layer to test all relevant project code to get the most possible **coverage**.
-
+Contains the unit test files, the seed files (information that will populate the initial version of the test database) and the database handler.
+The unit test files should check all relevant project code in order to get the most possible **code coverage**.
 
 ## DoIT - Linting 
 
@@ -220,5 +221,4 @@ This rule is aimed at discouraging the use of var and encouraging the use of con
 This rule enforces the consistent use of single quotes
 
 #### semi ([link](https://eslint.org/docs/rules/semi))
-
 This rule enforces consistent use of semicolons
