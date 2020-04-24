@@ -28,7 +28,7 @@ const getAllTasks = async (page, limit) => {
   }
 };
 
-const deleteTaskById = async id =>
+const deleteTaskById = async id => {
   model
     .findById(id)
     .then(task => {
@@ -54,6 +54,7 @@ const deleteTaskById = async id =>
     .catch(err => {
       throw boom.boomify(err);
     });
+};
 
 const getTaskById = async taskId => {
   try {
@@ -102,7 +103,7 @@ const completeTodoById = async id => {
   }
 };
 
-const create = async data =>
+const create = async data => {
   model
     .create({
       name: data.name,
@@ -117,6 +118,7 @@ const create = async data =>
     .catch(err => {
       throw boom.boomify(err);
     });
+};
 
 const update = async data => {
   const id = data.id;
