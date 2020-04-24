@@ -38,7 +38,7 @@ Install the project
 
 Run the project
 
-    node server.js
+    npm start
 
 Run the tests
 
