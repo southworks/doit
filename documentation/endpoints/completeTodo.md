@@ -23,7 +23,7 @@ The COMPLETE a TODO /tasks/{id} endpoint allows to mark a specific task as Compl
 ```JSON
 	{
   			"statusCode": 200,	
-				"message": "5e9739707fe8cd0ee69e8a2e - Task Completed",  			
+				"message": " [taskName] - Completed",  			
      }
 ```
 
@@ -31,15 +31,14 @@ The COMPLETE a TODO /tasks/{id} endpoint allows to mark a specific task as Compl
 ```JSON
 	{
   			"statusCode": 400,	
-				"message": "Invalid ID"
+				"message": " [id]  - ID not found "
      }
 ```
 
 ```JSON
 	{
-			"statusCode": 405,
- 			"error": "Internal Server Error",
- 			"message": "taskDeleted:  5e9739707fe8cd0ee69e8a2e - Already deleted"
+			"statusCode": 405, 			
+ 			"message": " [taskName] - was Deleted "
      }
 ```
 

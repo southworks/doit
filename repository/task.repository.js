@@ -71,17 +71,21 @@ const completeTodoById = async id => {
     let parsedTask = JSON.parse(JSON.stringify(task));
 
     //check existence of the record if not return 400
-    if (parsedTask === null) {
-      return 400;
-    }
-
-    //check "deleted" field in order to update or not
-    if (parsedTask.deleted === true) {
-      return 405;
-    }
-
-    //let taskName = parsedTask.name;
-
+    if (parsedTask === null) return {
+        message: id + ' - ID not found',
+        id: id,
+        code: 400
+      };
+        
+    let taskName = parsedTask.name;
+    
+      //check "deleted" field in order to update or not
+    if (parsedTask.deleted === true) return {
+        message: taskName + ' - was Deleted',
+        id: id,
+        code: 405
+      };
+        
     //update the record
     task = await Model.updateOne(
       { _id: id, deleted: false },
@@ -92,14 +96,36 @@ const completeTodoById = async id => {
     parsedTask = JSON.parse(JSON.stringify(task));
 
     //check if it was updateded
-    if (parsedTask.nModified === 0) {
-      return 500;
-    }
+    if (parsedTask.nModified === 0) return  {
+      message: 'Internal Server Error',
+      id: id,
+      code: 500
+    };
+    
+    //succefull operation
+    return {
+      message: taskName + ' - Completed',
+      id: id,
+      code: 200
+    };
 
     //succefull operation
     return 200;
   } catch (err) {
-    return 400;
+    return {
+      message: 'Internal Server Error',
+      id: id,
+      code: 500
+    };
+  }
+};
+
+const save = async data => {
+  const taskExists = await model.findById(data.id);
+  if (taskExists !== null) {
+    return update(data);
+  } else {
+    return create(data);
   }
 };
 
