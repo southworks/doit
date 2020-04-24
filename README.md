@@ -56,3 +56,14 @@ View
 > [PATH TO PRoJECT]/coverage/clover.xml
 
 > [PATH TO PROJECT]/coverage/coverage-final.json
+
+### **ESLint**
+
+#### run eslint
+
+npm run lint
+
+#### fix errors and warnings
+
+npm run lint -- --fix
+

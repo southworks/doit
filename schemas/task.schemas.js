@@ -1,5 +1,5 @@
-const Joi = require("@hapi/joi");
-const j2s = require("joi-to-swagger");
+const Joi = require('@hapi/joi');
+const j2s = require('joi-to-swagger');
 
 const error_schema = j2s(
   Joi.object().keys({
