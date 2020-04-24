@@ -44,7 +44,7 @@ const routes = [
     url: '/tasks/:id',
     schema: {
       params: {
-        id: {type: 'string'}
+        id: Joi.objectId().required(),
       },
       response:{
         200: deletedOK_schema.swagger
@@ -57,7 +57,7 @@ const routes = [
     url: '/tasks/:id',
     schema: {
       params: {
-        id: {type: 'string'}
+        id: Joi.objectId().required(),
       },
       response: {
         200: object_schema.swagger,
@@ -71,7 +71,7 @@ const routes = [
     url: '/tasks/:id',
     schema: {
       params: {
-        id: {type: 'string'}
+        id: Joi.objectId().required(),
       },
       response: {
         200: resOK_schema.swagger,
