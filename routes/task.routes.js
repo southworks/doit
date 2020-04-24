@@ -73,6 +73,26 @@ const routes = [
         id: Joi.objectId().required(),
       })
     },
+    response: {
+      200: {
+          description:'OK',
+          type: 'object',
+          properties: {
+            _id: { type: 'string' },
+            name: { type: 'string' },
+            is_completed: { type: 'boolean' },
+            deleted: { type: 'boolean' },
+            created_at: { type: 'string' }
+          }
+      },
+      400: {
+        description:'Error',
+        type: 'object',
+        properties: {
+          error: { type: 'string' }
+        }
+      }
+    },
     schemaCompiler: schema => data => schema.validate(data),
     handler: taskController.getTaskById
   },
