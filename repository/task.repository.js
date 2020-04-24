@@ -1,4 +1,4 @@
-const model = require('../model/task.model');
+const Model = require('../model/task.model');
 const boom = require('boom');
 
 const mapTask = task => ({
@@ -16,8 +16,8 @@ const getAllTasks = async (page, limit) => {
   }
 
   try {
-    let totalItems = await model.countDocuments();
-    let items = await model
+    let totalItems = await Model.countDocuments();
+    let items = await Model
       .find()
       .limit(limit)
       .skip(limit * page);
@@ -29,7 +29,7 @@ const getAllTasks = async (page, limit) => {
 };
 
 const deleteTaskById = async id => {
-  model
+  return Model
     .findById(id)
     .then(task => {
       if (task === null) {
@@ -38,7 +38,7 @@ const deleteTaskById = async id => {
           code: 400
         };
       }
-      return model
+      return Model
         .updateOne(
           { _id: id },
           {
@@ -58,7 +58,7 @@ const deleteTaskById = async id => {
 
 const getTaskById = async taskId => {
   try {
-    return model.findById(taskId);
+    return Model.findById(taskId);
   } catch (error) {
     throw boom.boomify(error);
   }
@@ -67,7 +67,7 @@ const getTaskById = async taskId => {
 const completeTodoById = async id => {
   try {
     //Bring the record to check if task is deleted
-    let task = await model.findById(id);
+    let task = await Model.findById(id);
     let parsedTask = JSON.parse(JSON.stringify(task));
 
     //check existence of the record if not return 400
@@ -83,7 +83,7 @@ const completeTodoById = async id => {
     //let taskName = parsedTask.name;
 
     //update the record
-    task = await model.updateOne(
+    task = await Model.updateOne(
       { _id: id, deleted: false },
       {
         is_completed: true
@@ -104,17 +104,18 @@ const completeTodoById = async id => {
 };
 
 const create = async data => {
-  model
-    .create({
-      name: data.name,
-      is_completed: data.is_completed || false
-    })
+  return new Model({
+    name: data.name,
+    is_completed: data.is_completed || false
+  })
     .save()
-    .then(task => ({
-      success: 'TODO created!',
-      code: 201,
-      data: mapTask(task)
-    }))
+    .then(task => {
+      return {
+        success: 'TODO created!',
+        code: 201,
+        data: mapTask(task)
+      };
+    })
     .catch(err => {
       throw boom.boomify(err);
     });
@@ -122,7 +123,7 @@ const create = async data => {
 
 const update = async data => {
   const id = data.id;
-  return model
+  return Model
     .updateOne(
       { _id: id },
       {
@@ -131,7 +132,7 @@ const update = async data => {
       }
     )
     .then(() =>
-      model.findById(id).then(task => ({
+      Model.findById(id).then(task => ({
         success: 'TODO updated!',
         code: 200,
         data: mapTask(task)
@@ -143,7 +144,7 @@ const update = async data => {
 };
 
 const save = async data => {
-  const taskExists = await model.findById(data.id);
+  const taskExists = await Model.findById(data.id);
   if (taskExists !== null) {
     return update(data);
   } else {

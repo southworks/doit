@@ -1,7 +1,8 @@
 const taskController = require('../controllers/task.controller');
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
-const { error_schema, getTasksResOK_schema } = require('../schemas/task.schemas');
+const { error_schema, objectsList_schema, object_schema, resOK_schema,
+  createdOK_schema, deletedOK_schema } = require('../schemas/task.schemas');
 
 
 const routes = [
@@ -14,7 +15,7 @@ const routes = [
         limit: {type: 'string'},
       },
       response: {
-        200: getTasksResOK_schema.swagger,
+        200: objectsList_schema.swagger,
         400: error_schema.swagger
       }
     },
@@ -24,90 +25,59 @@ const routes = [
     method: 'POST',
     url: '/tasks',
     schema: {
-      body: Joi.object({
-        id: Joi.string(),
-        name: Joi.string()
-          .min(2)
-          .required(),
-        is_completed: Joi.bool()
-      })
+      body: {
+        type: 'object',
+        properties:{
+          name: {type: 'string'},
+          is_completed: {type: 'boolean'}
+        }
+      },
+      response:{
+        200: createdOK_schema.swagger,
+        400: error_schema.swagger
+      }
     },
-    schemaCompiler: schema => data => schema.validate(data),
     handler: taskController.save
   },
   {
     method: 'DELETE',
     url: '/tasks/:id',
     schema: {
-      description: 'DELETE a todo',
-      params: Joi.object({
-        id: Joi.objectId().required(),
-      })
+      params: {
+        id: {type: 'string'}
+      },
+      response:{
+        200: deletedOK_schema.swagger
+      }
     },
-    schemaCompiler: schema => data => schema.validate(data),
     handler: taskController.deleteTaskById
   },
   {
     method: 'GET',
     url: '/tasks/:id',
     schema: {
-      description: 'DELETE a todo',
-      params: Joi.object({
-        id: Joi.objectId().required(),
-      })
-    },
-    response: {
-      200: {
-          description:'OK',
-          type: 'object',
-          properties: {
-            _id: { type: 'string' },
-            name: { type: 'string' },
-            is_completed: { type: 'boolean' },
-            deleted: { type: 'boolean' },
-            created_at: { type: 'string' }
-          }
+      params: {
+        id: {type: 'string'}
       },
-      400: {
-        description:'Error',
-        type: 'object',
-        properties: {
-          error: { type: 'string' }
-        }
+      response: {
+        200: object_schema.swagger,
+        400: error_schema.swagger
       }
     },
-    schemaCompiler: schema => data => schema.validate(data),
     handler: taskController.getTaskById
   },
   {
     method: 'PUT',
     url: '/tasks/:id',
     schema: {
+      params: {
+        id: {type: 'string'}
+      },
       response: {
-        200: {
-          type: 'object',
-          properties: {
-            completed: { type: 'string' }
-          }
-        },
-        400: {
-          type: 'object',
-          properties: {
-            errorId: { type: 'string' }
-          }
-        },
-        405: {
-          type: 'object',
-          properties: {
-            taskDeleted: { type: 'string' }
-          }
-        },
-        500: {
-          type: 'object',
-          properties: {
-            errorCatch: { type: 'string' }
-          }
-        },
+        200: resOK_schema.swagger,
+        400: error_schema.swagger,
+        405: error_schema.swagger,
+        500: error_schema.swagger,
       },
     },
     handler: taskController.completeTodoById
