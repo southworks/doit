@@ -107,27 +107,118 @@ To reapply a series of changes from a  [branch](https://git-scm.com/docs/gitglos
 
 ### Layers
 
-#### config
-Contains configuration files for packages used on the project. (i.e.: Swagger configuration)
 
 #### controllers
-Contains files that describes the functions to handle requests and responses. 
-Each controller function triggers functions on the **repository layer** depending on the request.
+This layer contains all files related to handle requests and responses. Each function send data to **model layer**.
 
-#### model
-Contains all the database schemas that are part of the project. 
-These schemas describes the attributes/composition of the entities that interacts in the proyect. 
-They are call by the functions on the **repository layer**.
 
-#### repository
-Contains files that describes the CRUD operations to perform.
-These CRUD functions are based on business logic to determine how the data will be created, stored nor changed. 
-Each function uses a database schema from the **model layer**.
+#### models
+Model layer works with business logic that determine how data can be created, stored and chanded. Each function gets a database schema related from **schema layer**.
+
+
+#### persistence
+The purpose of this layer is to validate and serializate data between **routes layer** and **controllers layer**. 
+
 
 #### routes
-Sets the routing configuration for each endpoint.
-They will route each endpoint request to the **controller layer** in order to handle it and prepare a response.
+This layer sets routing configuration for each endpoint and works in conjunction with **persistence layer** and **controllers layer**.
+
+
+#### schema
+Schema layer has all database schema from the project. These schemas are retrieved to **model layer**.
+
 
 #### test
-Contains the unit test files, the seed files (information that will populate the initial version of the test database) and the database handler.
-The unit test files should check all relevant project code in order to get the most possible **code coverage**.
+Required layer to test all relevant project code to get the most possible **coverage**.
+
+
+## DoIT - Linting 
+
+
+ESLint is a static code analysis tool for identifying problematic patterns found in JavaScript code.
+
+Rules are configurable, and customized rules can be defined and loeaded.
+
+I installed the necessary dependencies to run some rules that I added. Below a brief description of all of them.
+
+#### node/exports-style ([link](https://github.com/mysticatea/eslint-plugin-node/blob/master/docs/rules/exports-style.md))
+
+Force to use module.exports instead exports. It is a plugin rule added with eslint-plugin-node package.
+
+#### array-bracket-spacing ([link](https://eslint.org/docs/rules/array-bracket-spacing))
+
+Remove space of brackets
+
+#### block-scoped-var ([link](https://eslint.org/docs/rules/block-scoped-var))
+
+generates warnings when variables are used outside of the block in which they were defined
+
+#### computed-property-spacing ([link](https://eslint.org/docs/rules/computed-property-spacing))
+
+This rule enforces consistent spacing inside computed property brackets
+
+#### eol-last ([link](https://eslint.org/docs/rules/eol-last))
+
+This rule enforces at least one newline (or absence thereof) at the end of non-empty files.
+
+#### eqeqeq ([link](https://eslint.org/docs/rules/eqeqeq))
+
+It is considered good practice to use the type-safe equality operators === and !== instead of their regular counterparts == and !=
+
+With “smart” option, the rule enforces the use of === and !== except for these cases:
+
+-   Comparing two literal values
+-   Evaluating the value of typeof
+-   Comparing against null
+
+#### func-style ([link](https://eslint.org/docs/rules/func-style))
+
+This rule enforces a particular type of function style throughout a JavaScript file with function expressions
+
+#### keyword-spacing ([link](https://eslint.org/docs/rules/keyword-spacing))
+
+This rule enforces consistent spacing around keywords and keyword-like tokens
+
+#### max-depth ([link](https://eslint.org/docs/rules/max-depth))
+
+This rule enforces a maximum depth that blocks can be nested to reduce code complexity
+
+#### max-len ([link](https://eslint.org/docs/rules/max-len))
+
+This rule enforces a maximum line length to increase code readability and maintainability
+
+#### max-statements ([link](https://eslint.org/docs/rules/max-statements))
+
+This rule enforces a maximum number of statements allowed in function blocks
+
+#### new-cap ([link](https://eslint.org/docs/rules/new-cap))
+
+This rule requires constructor names to begin with a capital letter.
+
+#### no-extend-native ([link](https://eslint.org/docs/rules/no-extend-native))
+
+Disallows directly modifying the prototype of builtin objects.
+
+#### no-mixed-spaces-and-tabs ([link](https://eslint.org/docs/rules/no-mixed-spaces-and-tabs))
+
+Most code conventions require either tabs or spaces be used for indentation. As such, it's usually an error if a single line of code is indented with both tabs and spaces
+
+#### no-trailing-spaces ([link](https://eslint.org/docs/rules/no-trailing-spaces))
+
+This rule disallows trailing whitespace (spaces, tabs, and other Unicode whitespace characters) at the end of lines.
+
+#### no-unused-vars ([link](https://eslint.org/docs/rules/no-unused-vars))
+
+This rule is aimed at eliminating unused variables, functions, and function parameters.
+
+#### no-var ([link](https://eslint.org/docs/rules/no-var))
+
+This rule is aimed at discouraging the use of var and encouraging the use of const or let instead
+
+#### quotes ([link](https://eslint.org/docs/rules/quotes))
+
+This rule enforces the consistent use of single quotes
+
+#### semi ([link](https://eslint.org/docs/rules/semi))
+
+This rule enforces consistent use of semicolons
