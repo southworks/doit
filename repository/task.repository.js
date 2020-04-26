@@ -169,13 +169,4 @@ const update = async data => {
     });
 };
 
-const save = async data => {
-  const taskExists = await Model.findById(data.id);
-  if (taskExists !== null) {
-    return update(data);
-  } else {
-    return create(data);
-  }
-};
-
 module.exports = { getAllTasks, deleteTaskById, getTaskById, completeTodoById, save };

@@ -47,7 +47,7 @@ const routes = [
         id: Joi.objectId().required(),
       },
       response:{
-        200: deletedOK_schema.swagger
+        200: deletedOK_schema.swagger        
       }
     },
     handler: taskController.deleteTaskById
@@ -73,14 +73,12 @@ const routes = [
       params: {
         id: Joi.objectId().required(),
       },
-/*      
         response: {
           200: resOK_schema.swagger,
           400: error_schema.swagger,
           405: error_schema.swagger,
           500: error_schema.swagger,
       },
-*/      
     },
     handler: taskController.completeTodoById
   }
