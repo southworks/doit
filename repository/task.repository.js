@@ -33,27 +33,13 @@ const deleteTaskById = async id => {
     .findById(id)
     .then(task => {
       if (task === null) {
-        return {
-          message: 'An error occurred, check the ID or try again later',
-          code: 400
-        };
+        return { message: 'An error occurred, check the ID or try again later', code: 400 };
       }
       return Model
-        .updateOne(
-          { _id: id },
-          {
-            deleted: true
-          }
-        )
-        .then(() => ({
-          message: 'TODO deleted!',
-          id: id,
-          code: 200
-        }));
+        .updateOne( { _id: id }, { deleted: true } )
+        .then(() => ({ message: 'TODO deleted!', id: id, code: 200 }));
     })
-    .catch(err => {
-      throw boom.boomify(err);
-    });
+    .catch(err => { throw boom.boomify(err); } );
 };
 
 const getTaskById = async taskId => {
@@ -66,66 +52,32 @@ const getTaskById = async taskId => {
 
 const completeTodoById = async id => {
   try {
+    if (id === '') { return { message: 'No ID. Error', id: id, code: 400 }; }
+
     //Bring the record to check if task is deleted
     let task = await Model.findById(id);
     let parsedTask = JSON.parse(JSON.stringify(task));
 
     //check existence of the record if not return 400
-    if (parsedTask === null) return {
-        message: id + ' - ID not found',
-        id: id,
-        code: 400
-      };
-        
+    if (parsedTask === null) { return { message: id + ' - ID not found', id: id, code: 400 }; }
+
     let taskName = parsedTask.name;
-    
-      //check "deleted" field in order to update or not
-    if (parsedTask.deleted === true) return {
-        message: taskName + ' - was Deleted',
-        id: id,
-        code: 405
-      };
-        
+    //check "deleted" field in order to update or not
+    if (parsedTask.deleted === true) { return { message: taskName + ' - was Deleted', id: id, code: 405 }; }
+
     //update the record
-    task = await Model.updateOne(
-      { _id: id, deleted: false },
-      {
-        is_completed: true
-      }
-    );
+    task = await Model.updateOne( { _id: id, deleted: false }, { is_completed: true } );
     parsedTask = JSON.parse(JSON.stringify(task));
 
     //check if it was updateded
-    if (parsedTask.nModified === 0) return  {
-      message: 'Internal Server Error',
-      id: id,
-      code: 500
-    };
-    
-    //succefull operation
-    return {
-      message: taskName + ' - Completed',
-      id: id,
-      code: 200
-    };
+    if (parsedTask.nModified === 0) { return { message: 'Internal Server Error', id: id, code: 500 }; }
 
     //succefull operation
-    return 200;
+    return { message: taskName + ' - Completed', id: id, code: 200 };
+
   } catch (err) {
-    return {
-      message: 'Internal Server Error',
-      id: id,
-      code: 500
-    };
-  }
-};
-
-const save = async data => {
-  const taskExists = await model.findById(data.id);
-  if (taskExists !== null) {
-    return update(data);
-  } else {
-    return create(data);
+    //return { message: 'Internal Server Error', id: id, code: 500 };
+    throw boom.boomify(err);
   }
 };
 
@@ -167,6 +119,15 @@ const update = async data => {
     .catch(err => {
       throw boom.boomify(err);
     });
+};
+
+const save = async data => {
+  const taskExists = await Model.findById(data.id);
+  if (taskExists !== null) {
+    return update(data);
+  } else {
+    return create(data);
+  }
 };
 
 module.exports = { getAllTasks, deleteTaskById, getTaskById, completeTodoById, save };

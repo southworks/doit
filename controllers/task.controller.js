@@ -39,7 +39,7 @@ const getTaskById = async (req, res) => {
   const result = await repository.getTaskById(req.params.id);
   if (!result) {
     return res
-      .code(400)      
+      .code(400)
       .send({ error: 'invalid id' });
   }
   return res

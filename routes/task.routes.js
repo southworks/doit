@@ -22,6 +22,21 @@ const routes = [
     handler: taskController.getAllTasks
   },
   {
+    method: 'DELETE',
+    url: '/tasks/:id',
+    schema: {
+/*
+      params: {
+        id: Joi.objectId().required(),
+      },
+*/
+      response:{
+        200: deletedOK_schema.swagger
+      }
+    },
+    handler: taskController.deleteTaskById
+  },
+  {
     method: 'POST',
     url: '/tasks',
     schema: {
@@ -40,25 +55,9 @@ const routes = [
     handler: taskController.save
   },
   {
-    method: 'DELETE',
-    url: '/tasks/:id',
-    schema: {
-      params: {
-        id: Joi.objectId().required(),
-      },
-      response:{
-        200: deletedOK_schema.swagger        
-      }
-    },
-    handler: taskController.deleteTaskById
-  },
-  {
     method: 'GET',
     url: '/tasks/:id',
     schema: {
-      params: {
-        id: Joi.objectId().required(),
-      },
       response: {
         200: object_schema.swagger,
         400: error_schema.swagger
@@ -70,9 +69,11 @@ const routes = [
     method: 'PUT',
     url: '/tasks/:id',
     schema: {
+/*
       params: {
         id: Joi.objectId().required(),
       },
+*/
         response: {
           200: resOK_schema.swagger,
           400: error_schema.swagger,
@@ -82,6 +83,7 @@ const routes = [
     },
     handler: taskController.completeTodoById
   }
+
 ];
 
 module.exports = routes;
